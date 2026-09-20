@@ -17,7 +17,7 @@ export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
 
   return (
-    <div className="relative min-h-dvh bg-[#09090b] text-neutral-100">
+    <div className="relative min-h-dvh bg-slateDark-800 text-peach-light">
       {/* Subtle grid background */}
       <div
         className="absolute inset-0 opacity-[0.015] pointer-events-none"
@@ -32,7 +32,7 @@ export default function ContactPage() {
         <motion.div initial="hidden" animate="visible" custom={0} variants={fadeUp}>
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 text-xs text-neutral-500 hover:text-cyan-400 transition-colors mb-10"
+            className="inline-flex items-center gap-1.5 text-xs text-peach/40 hover:text-peach transition-colors mb-10"
           >
             <span>←</span> Back to Game
           </Link>
@@ -46,7 +46,7 @@ export default function ContactPage() {
           variants={fadeUp}
           className="text-3xl font-bold tracking-tight mb-2"
         >
-          Contact <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-violet-500 to-cyan-400">Us</span>
+          Contact <span className="text-transparent bg-clip-text bg-gradient-to-r from-peach via-peach-light to-peach-dark">Us</span>
         </motion.h1>
 
         <motion.div
@@ -54,7 +54,7 @@ export default function ContactPage() {
           animate="visible"
           custom={2}
           variants={fadeUp}
-          className="h-px w-16 bg-gradient-to-r from-pink-500 to-cyan-400 mb-8"
+          className="h-px w-16 bg-gradient-to-r from-peach to-peach-dark mb-8"
         />
 
         {/* Email Card */}
@@ -63,14 +63,14 @@ export default function ContactPage() {
           animate="visible"
           custom={3}
           variants={fadeUp}
-          className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-5 mb-8"
+          className="rounded-xl border border-slateDark-600/6 bg-slateDark-700/2 p-5 mb-8"
         >
-          <p className="text-sm text-neutral-400 mb-3">
+          <p className="text-sm text-peach/55 mb-3">
             For any bugs, game issues, or feedback, please reach out to us directly at:
           </p>
           <a
             href="mailto:sharafathabi.personal@gmail.com"
-            className="inline-flex items-center gap-2 text-sm font-medium text-cyan-400 hover:text-cyan-300 transition-colors"
+            className="inline-flex items-center gap-2 text-sm font-medium text-peach hover:text-peach-light transition-colors"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -86,12 +86,12 @@ export default function ContactPage() {
           custom={4}
           variants={fadeUp}
         >
-          <h2 className="text-sm font-semibold text-neutral-200 mb-4">Send Us a Message</h2>
+          <h2 className="text-sm font-semibold text-peach/90 mb-4">Send Us a Message</h2>
 
           {submitted ? (
-            <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-6 text-center">
-              <p className="text-emerald-400 text-sm font-medium">Thank you for your message!</p>
-              <p className="text-neutral-500 text-xs mt-1">We&apos;ll get back to you as soon as possible.</p>
+            <div className="rounded-xl border border-peach/20 bg-peach/5 p-6 text-center">
+              <p className="text-peach text-sm font-medium">Thank you for your message!</p>
+              <p className="text-peach/40 text-xs mt-1">We&apos;ll get back to you as soon as possible.</p>
             </div>
           ) : (
             <form
@@ -103,7 +103,7 @@ export default function ContactPage() {
             >
               {/* Name */}
               <div>
-                <label htmlFor="contact-name" className="block text-[11px] font-semibold uppercase tracking-wider text-neutral-500 mb-1.5">
+                <label htmlFor="contact-name" className="block text-[11px] font-semibold uppercase tracking-wider text-peach/40 mb-1.5">
                   Name
                 </label>
                 <input
@@ -111,13 +111,13 @@ export default function ContactPage() {
                   type="text"
                   required
                   placeholder="Your name"
-                  className="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-3.5 py-2.5 text-sm text-neutral-200 placeholder-neutral-600 outline-none focus:border-cyan-500/40 focus:ring-1 focus:ring-cyan-500/20 transition-all"
+                  className="w-full rounded-lg bg-slateDark-900 border border-slateDark-600 px-3.5 py-2.5 text-sm text-peach placeholder:text-slateDark-600 outline-none focus:border-peach focus:ring-1 focus:ring-peach transition-all"
                 />
               </div>
 
               {/* Email */}
               <div>
-                <label htmlFor="contact-email" className="block text-[11px] font-semibold uppercase tracking-wider text-neutral-500 mb-1.5">
+                <label htmlFor="contact-email" className="block text-[11px] font-semibold uppercase tracking-wider text-peach/40 mb-1.5">
                   Email
                 </label>
                 <input
@@ -125,13 +125,13 @@ export default function ContactPage() {
                   type="email"
                   required
                   placeholder="you@example.com"
-                  className="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-3.5 py-2.5 text-sm text-neutral-200 placeholder-neutral-600 outline-none focus:border-cyan-500/40 focus:ring-1 focus:ring-cyan-500/20 transition-all"
+                  className="w-full rounded-lg bg-slateDark-900 border border-slateDark-600 px-3.5 py-2.5 text-sm text-peach placeholder:text-slateDark-600 outline-none focus:border-peach focus:ring-1 focus:ring-peach transition-all"
                 />
               </div>
 
               {/* Message */}
               <div>
-                <label htmlFor="contact-message" className="block text-[11px] font-semibold uppercase tracking-wider text-neutral-500 mb-1.5">
+                <label htmlFor="contact-message" className="block text-[11px] font-semibold uppercase tracking-wider text-peach/40 mb-1.5">
                   Message
                 </label>
                 <textarea
@@ -139,14 +139,14 @@ export default function ContactPage() {
                   required
                   rows={5}
                   placeholder="Tell us what's on your mind..."
-                  className="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-3.5 py-2.5 text-sm text-neutral-200 placeholder-neutral-600 outline-none focus:border-cyan-500/40 focus:ring-1 focus:ring-cyan-500/20 transition-all resize-none"
+                  className="w-full rounded-lg bg-slateDark-900 border border-slateDark-600 px-3.5 py-2.5 text-sm text-peach placeholder:text-slateDark-600 outline-none focus:border-peach focus:ring-1 focus:ring-peach transition-all resize-none"
                 />
               </div>
 
               {/* Submit */}
               <button
                 type="submit"
-                className="w-full rounded-lg bg-gradient-to-r from-violet-600 to-cyan-600 px-4 py-2.5 text-sm font-semibold text-white hover:from-violet-500 hover:to-cyan-500 transition-all active:scale-[0.98]"
+                className="w-full rounded-lg bg-peach text-slateDark-900 font-semibold hover:bg-peach-light active:bg-peach-dark shadow-md px-4 py-2.5 text-sm transition-all active:scale-[0.98]"
               >
                 Send Message
               </button>
@@ -160,11 +160,11 @@ export default function ContactPage() {
           animate="visible"
           custom={5}
           variants={fadeUp}
-          className="mt-12 pt-6 border-t border-white/[0.04] flex flex-wrap gap-4 text-[11px] text-neutral-600"
+          className="mt-12 pt-6 border-t border-slateDark-600/4 flex flex-wrap gap-4 text-[11px] text-peach/35"
         >
-          <Link href="/about" className="hover:text-cyan-400 transition-colors">About Us</Link>
-          <Link href="/privacy" className="hover:text-cyan-400 transition-colors">Privacy Policy</Link>
-          <Link href="/terms" className="hover:text-cyan-400 transition-colors">Terms of Service</Link>
+          <Link href="/about" className="hover:text-peach transition-colors">About Us</Link>
+          <Link href="/privacy" className="hover:text-peach transition-colors">Privacy Policy</Link>
+          <Link href="/terms" className="hover:text-peach transition-colors">Terms of Service</Link>
         </motion.div>
       </div>
     </div>

@@ -3,15 +3,16 @@
 //  Secure server-side Route Handler:
 //   1. Validates user session via Supabase
 //   2. Fetches current level's secret word from DB
-//   3. Evaluates semantic similarity via Gemini (server-side only)
+//   3. Evaluates semantic similarity via AI providers (server-side only)
 //   4. On correct guess, advances the user to the next level in DB
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { NextRequest, NextResponse } from "next/server";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { createClient, createAdminClient } from "@/utils/supabase/server";
-import type { GuessResponse } from "@/types/game";
-import { callAIProvider } from "@/lib/aiProvider";
+import type { GuessResponse, ConceptReveal } from "@/types/game";
+import { parseGameContent } from "@/types/game";
+import { evaluateGuess, NoAiProviderError, sanitizeGuessWord } from "@/lib/guessEvaluator";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 // ── Security: rate-limit map (per-user, in-memory, resets on cold start) ─────
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
@@ -31,38 +32,84 @@ function isRateLimited(userId: string): boolean {
   return false;
 }
 
-// ── Sanitize: strip non-alpha characters, trim, lowercase ────────────────────
-function sanitizeWord(raw: string): string {
-  return raw.trim().toLowerCase().replace(/[^a-z\s'-]/g, "").substring(0, 64);
+// A client-reported elapsed time is inherently unverifiable (there's no
+// server-side clock anchor for solo games), but it's clamped to a sane range
+// so a bad/negative value from the client can't corrupt the leaderboard.
+function clampTimeTakenSeconds(raw: unknown): number | null {
+  if (typeof raw !== "number" || !Number.isFinite(raw)) return null;
+  return Math.min(24 * 60 * 60, Math.max(0, Math.round(raw)));
 }
 
+// ── Advance the user to the next level, clear the active word, record the
+//    round in game_sessions for the weekly leaderboard, and build the
+//    "Aha!" concept reveal card shown on the Victory modal (exact match or
+//    synonym win both count as solving the level). ─────────────────────────
+async function advanceLevel(
+  adminClient: SupabaseClient,
+  userId: string,
+  currentLevel: number,
+  guess: string,
+  secretWord: string,
+  rawContent: string | null,
+  guessCount: number,
+  timeTakenSeconds: number | null
+): Promise<{ newLevel: number; concept: ConceptReveal }> {
+  const newLevel = currentLevel + 1;
+  const content = parseGameContent(rawContent);
 
+  const { error: updateError } = await adminClient
+    .from("profiles")
+    .update({
+      current_level: newLevel,
+      active_word: null,
+      current_story: null,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", userId);
 
-// Fallback: character overlap similarity if Gemini API key rate limits (429) ───
-function calculateFallbackSimilarity(guess: string, secretWord: string): { rank: number; similarityPercentage: number } {
-  const secretChars = new Set(secretWord.split(""));
-  const guessChars = new Set(guess.split(""));
-  let commonCount = 0;
-  for (const char of guessChars) {
-    if (secretChars.has(char)) {
-      commonCount++;
-    }
+  if (updateError) {
+    console.error("[contextle] Failed to advance level:", updateError);
   }
-  const maxUnique = Math.max(secretChars.size, guessChars.size);
-  const overlapRatio = maxUnique > 0 ? commonCount / maxUnique : 0;
-  const lengthDiff = Math.abs(secretWord.length - guess.length);
-  const lengthPenalty = Math.max(0, 1 - lengthDiff / Math.max(secretWord.length, 1));
-  const combinedScore = (overlapRatio * 0.7) + (lengthPenalty * 0.3);
-  const similarityPercentage = Math.round(combinedScore * 100);
-  const rank = Math.min(1000, Math.max(2, Math.round(1000 - (combinedScore * 900))));
-  return { rank, similarityPercentage };
+
+  try {
+    await adminClient.from("played_words").insert({ user_id: userId, word: guess });
+  } catch (err) {
+    console.warn(
+      "[contextle] Failed to insert into played_words table (might not exist):",
+      err
+    );
+  }
+
+  try {
+    await adminClient.from("game_sessions").insert({
+      user_id: userId,
+      mode: "solo",
+      won: true,
+      time_taken_seconds: timeTakenSeconds,
+      guess_count: guessCount,
+      category: content?.category ?? null,
+      secret_word: secretWord,
+      takeaways: content?.takeaways ?? null,
+    });
+  } catch (err) {
+    console.warn("[contextle] Failed to insert into game_sessions (might not exist):", err);
+  }
+
+  return {
+    newLevel,
+    concept: {
+      category: content?.category ?? "foundations",
+      mysteryHook: content?.mysteryHook ?? "",
+      takeaways: content?.takeaways ?? ["", "", ""],
+    },
+  };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 //  POST /api/guess
 // ─────────────────────────────────────────────────────────────────────────────
 export async function POST(request: NextRequest): Promise<NextResponse> {
-  // ── 1. Authenticate — verify active Supabase session ───────────────────────
+  // ── 1. Authenticate - verify active Supabase session ───────────────────────
   const supabase = await createClient();
   const {
     data: { user },
@@ -79,13 +126,19 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   // ── 2. Rate Limiting (per user) ────────────────────────────────────────────
   if (isRateLimited(user.id)) {
     return NextResponse.json(
-      { success: false, error: "Too many requests. Slow down, genius! 😅" },
+      { success: false, error: "Too many requests. Slow down, genius!" },
       { status: 429 }
     );
   }
 
   // ── 3. Parse & Validate Body ───────────────────────────────────────────────
-  let body: { word?: unknown; level?: unknown; guessedWords?: unknown };
+  let body: {
+    word?: unknown;
+    level?: unknown;
+    guessedWords?: unknown;
+    bestPriorGuess?: unknown;
+    timeTakenSeconds?: unknown;
+  };
   try {
     body = await request.json();
   } catch {
@@ -102,7 +155,14 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     );
   }
 
-  const guess = sanitizeWord(body.word);
+  const guess = sanitizeGuessWord(body.word);
+  if (!guess) {
+    return NextResponse.json(
+      { success: false, error: "Invalid word input." },
+      { status: 400 }
+    );
+  }
+
   const guessedWords = Array.isArray(body.guessedWords) ? body.guessedWords : [];
   if (guessedWords.includes(guess)) {
     return NextResponse.json(
@@ -116,13 +176,36 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
   const requestedLevel =
     typeof body.level === "number" ? Math.round(body.level) : null;
+  const timeTakenSeconds = clampTimeTakenSeconds(body.timeTakenSeconds);
+
+  // Extract optional calibration anchor to maintain ordinal monotonicity
+  let bestPriorAnchor: { word: string; rank: number } | null = null;
+  if (
+    body.bestPriorGuess &&
+    typeof body.bestPriorGuess === "object" &&
+    "word" in body.bestPriorGuess &&
+    "rank" in body.bestPriorGuess
+  ) {
+    const bg = body.bestPriorGuess as { word: unknown; rank: unknown };
+    if (
+      typeof bg.word === "string" &&
+      typeof bg.rank === "number" &&
+      bg.rank > 1 &&
+      bg.rank < 1000
+    ) {
+      bestPriorAnchor = {
+        word: sanitizeGuessWord(bg.word),
+        rank: Math.round(bg.rank),
+      };
+    }
+  }
 
   // ── 4. Fetch user's current level and active word from DB ─────────────────
   const adminClient = await createAdminClient();
 
   const { data: profile, error: profileError } = await adminClient
     .from("profiles")
-    .select("current_level, active_word")
+    .select("current_level, active_word, current_story")
     .eq("id", user.id)
     .single();
 
@@ -159,116 +242,53 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   }
 
   const secretWord = profile.active_word.toLowerCase();
+  const guessCount = guessedWords.length + 1;
 
-  // ── 6. Instant win check ───────────────────────────────────────────────────
-  if (guess === secretWord) {
-    // Advance the user to the next level and clear the active word
-    const newLevel = currentLevel + 1;
-    const { error: updateError } = await adminClient
-      .from("profiles")
-      .update({
-        current_level: newLevel,
-        active_word: null,
-        current_story: null,
-        updated_at: new Date().toISOString()
-      })
-      .eq("id", user.id);
-
-    if (updateError) {
-      console.error("[contextle] Failed to advance level:", updateError);
-    }
-
-    // Save to played_words table if available
-    try {
-      await adminClient
-        .from("played_words")
-        .insert({ user_id: user.id, word: guess });
-    } catch (err) {
-      console.warn("[contextle] Failed to insert into played_words table (might not exist):", err);
-    }
-
-    return NextResponse.json<GuessResponse>({
-      success: true,
-      word: guess,
-      rank: 1,
-      similarityPercentage: 100,
-      isCorrect: true,
-      newLevel,
-    });
-  }
-
-  // ── 7. Gemini API call (server-side only) ──────────────────────────────────
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) {
-    console.warn("[contextle] GEMINI_API_KEY is not set. Using fallback similarity.");
-    const { rank, similarityPercentage } = calculateFallbackSimilarity(guess, secretWord);
-    return NextResponse.json<GuessResponse>({
-      success: true,
-      word: guess,
-      rank,
-      similarityPercentage,
-      isCorrect: false,
-    });
-  }
-
+  // ── 6. Semantic Evaluation (shared with /api/multiplayer/guess) ────────────
   try {
-    const prompt = `
-You are a semantic similarity evaluator for a word-guessing game.
+    const result = await evaluateGuess(secretWord, guess, bestPriorAnchor);
 
-Task: Compare how semantically close the GUESS word is to the SECRET word.
+    if (result.isCorrect || result.isSynonymWin) {
+      const { newLevel, concept } = await advanceLevel(
+        adminClient,
+        user.id,
+        currentLevel,
+        guess,
+        secretWord,
+        profile.current_story,
+        guessCount,
+        timeTakenSeconds
+      );
 
-SECRET word: "${secretWord}"
-GUESS word:  "${guess}"
-
-Instructions:
-1. Evaluate semantic, conceptual, and associative closeness.
-2. Assign a RANK from 1 (identical/closest) to 1000 (unrelated/furthest).
-   - 1–50:   Extremely close (synonyms, same category, directly related)
-   - 51–200: Moderately related (same domain, loose association)
-   - 201–500: Distantly related (broad topic overlap)
-   - 501–1000: Unrelated
-3. Assign a SIMILARITY_PERCENTAGE from 0–100 (100 = identical, 0 = no relation).
-4. isCorrect should ONLY be true if the guess exactly matches the secret word.
-
-IMPORTANT: Return ONLY valid JSON. No markdown, no explanation.
-
-{
-  "rank": <integer 1-1000>,
-  "similarityPercentage": <integer 0-100>,
-  "isCorrect": false
-}
-`.trim();
-
-    const parsed = await callAIProvider<{
-      rank: number;
-      similarityPercentage: number;
-      isCorrect: boolean;
-    }>(prompt, "Guess");
-
-    // Clamp values defensively
-    const rank = Math.min(1000, Math.max(1, Math.round(parsed.rank ?? 999)));
-    const similarityPercentage = Math.min(
-      100,
-      Math.max(0, Math.round(parsed.similarityPercentage ?? 0))
-    );
+      return NextResponse.json<GuessResponse>({
+        success: true,
+        word: guess,
+        ...result,
+        concept,
+        newLevel,
+      });
+    }
 
     return NextResponse.json<GuessResponse>({
       success: true,
       word: guess,
-      rank,
-      similarityPercentage,
-      isCorrect: false,
+      ...result,
     });
   } catch (error) {
-    console.warn("[contextle][Guess] All AI providers failed. Using local fallback similarity metric:", error);
-    const { rank, similarityPercentage } = calculateFallbackSimilarity(guess, secretWord);
-    return NextResponse.json<GuessResponse>({
-      success: true,
-      word: guess,
-      rank,
-      similarityPercentage,
-      isCorrect: false,
-    });
+    if (error instanceof NoAiProviderError) {
+      return NextResponse.json(
+        { success: false, error: "Semantic evaluation service temporarily unavailable. Please try again." },
+        { status: 503 }
+      );
+    }
+    console.error("[contextle][Guess] All AI providers failed:", error);
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Semantic evaluation service temporarily unavailable. Please try again.",
+      },
+      { status: 503 }
+    );
   }
 }
 

@@ -33,38 +33,38 @@ export default function HowToPlayModal({ isOpen, onClose }: HowToPlayModalProps)
           <motion.div key="bd" className="modal-backdrop fixed inset-0 z-40" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} />
           <motion.div key="m" className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">
             <motion.div
-              className="glass w-full max-w-md max-h-[85vh] overflow-y-auto rounded-2xl border border-white/[0.04] shadow-[0_25px_60px_rgba(0,0,0,0.8)]"
+              className="glass bg-slateDark-800 w-full max-w-md max-h-[85vh] overflow-y-auto rounded-2xl border border-peach/30 shadow-2xl"
               initial={{ opacity: 0, scale: 0.96, y: 8 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.98, y: 4 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
             >
-              <div className="flex items-center justify-between p-5 border-b border-white/[0.03]">
+              <div className="flex items-center justify-between p-5 border-b border-slateDark-600/[0.03]">
                 <div>
-                  <h2 className="font-bold text-base text-white tracking-tight">How to Play</h2>
-                  <p className="text-[10px] text-neutral-500 mt-0.5">Semantic word association</p>
+                  <h2 className="font-bold text-base text-peach-light tracking-tight">How to Play</h2>
+                  <p className="text-[10px] text-peach/40 mt-0.5">Semantic word association</p>
                 </div>
-                <button onClick={onClose} className="w-7 h-7 rounded-lg flex items-center justify-center bg-white/[0.02] border border-white/[0.05] hover:border-white/10 text-neutral-400 hover:text-white transition-all duration-150">
+                <button onClick={onClose} className="w-7 h-7 rounded-lg flex items-center justify-center bg-slateDark-700/[0.02] border border-slateDark-600/[0.05] hover:border-slateDark-600/10 text-peach/55 hover:text-peach-light transition-all duration-150">
                   <X size={12} />
                 </button>
               </div>
-              
+
               <div className="p-5 space-y-3.5">
                 {rules.map((r, i) => (
                   <motion.div key={r.title} className="flex gap-3" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: i * 0.03 }}>
-                    <div className="w-7 h-7 rounded-lg flex items-center justify-center bg-emerald-500/10 text-emerald-400 flex-shrink-0 border border-emerald-500/15">
+                    <div className="w-7 h-7 rounded-lg flex items-center justify-center bg-peach/10 text-peach flex-shrink-0 border border-peach/20">
                       <r.icon size={12} />
                     </div>
                     <div>
-                      <p className="font-semibold text-xs text-neutral-200">{r.title}</p>
-                      <p className="text-[10px] text-neutral-400 leading-relaxed mt-0.5">{r.desc}</p>
+                      <p className="font-semibold text-xs text-peach/90">{r.title}</p>
+                      <p className="text-[10px] text-peach/55 leading-relaxed mt-0.5">{r.desc}</p>
                     </div>
                   </motion.div>
                 ))}
               </div>
 
               <div className="px-5 pb-5">
-                <button onClick={onClose} className="w-full py-2.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-white font-semibold text-xs transition-all duration-150 shadow-[0_0_20px_rgba(16,185,129,0.15)] active:scale-[0.98]">
+                <button onClick={onClose} className="w-full py-2.5 rounded-lg bg-peach text-slateDark-900 font-semibold hover:bg-peach-light active:bg-peach-dark text-xs transition-all duration-150 shadow-md active:scale-[0.98]">
                   Start Playing
                 </button>
               </div>

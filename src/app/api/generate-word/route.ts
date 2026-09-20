@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { createClient, createAdminClient } from "@/utils/supabase/server";
-import { EASY_PAIRS, MEDIUM_PAIRS, HARD_PAIRS } from "@/lib/fallbackData";
-import { callAIProvider } from "@/lib/aiProvider";
+import { generateGameContent, VALID_CATEGORIES } from "@/lib/wordGeneration";
+import type { GameCategory } from "@/types/game";
+import { parseGameContent } from "@/types/game";
 
 // ── DB-Backed Rate Limiting (per user, serverless-safe) ──
 async function checkDbRateLimit(
@@ -69,18 +69,6 @@ async function checkDbRateLimit(
     console.warn("[contextle] DB rate limit check bypassed:", err);
     return false; // Graceful degradation
   }
-}
-
-// ── Redact Secret Word (Turn Leaks into Fill-in-the-Blank Clues) ──
-function redactSecretWord(story: string, secretWord: string): string {
-  // Redact the exact word
-  let redacted = story.replace(new RegExp(`\\b${secretWord}\\b`, "gi"), "___");
-  // Redact common plural/suffix forms
-  redacted = redacted.replace(new RegExp(`\\b${secretWord}s\\b`, "gi"), "___s");
-  redacted = redacted.replace(new RegExp(`\\b${secretWord}es\\b`, "gi"), "___es");
-  redacted = redacted.replace(new RegExp(`\\b${secretWord}ing\\b`, "gi"), "___ing");
-  redacted = redacted.replace(new RegExp(`\\b${secretWord}ed\\b`, "gi"), "___ed");
-  return redacted;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -164,11 +152,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
     // If a word is already generated, return it immediately to resolve the race condition
     if (profile === null && existingProfile.active_word && existingProfile.current_story) {
-      try {
-        const stories = JSON.parse(existingProfile.current_story);
-        return NextResponse.json({ success: true, stories });
-      } catch {
-        // parsing failed, proceed to generate
+      const content = parseGameContent(existingProfile.current_story);
+      if (content) {
+        return NextResponse.json({ success: true, ...content });
       }
     }
 
@@ -179,6 +165,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
   let excludeWords: string[] = [];
   let reqLevel: number | null = null;
+  let category: GameCategory = "foundations";
   try {
     const body = await request.json();
     if (body) {
@@ -187,6 +174,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       }
       if (typeof body.level === "number") {
         reqLevel = Math.round(body.level);
+      }
+      if (VALID_CATEGORIES.includes(body.category)) {
+        category = body.category;
       }
     }
   } catch {
@@ -213,156 +203,35 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
   const allExcluded = Array.from(new Set([...excludeWords, ...dbPlayedWords]));
 
-  // Compact prompt to reduce token count, cost, and latency
-  const prompt = `
-Generate EXACTLY ONE secret word and exactly 3 clue stories for a Level ${currentLevel} word guessing game.
-Your word choice and clue difficulty MUST strictly match the level guidelines below.
+  // generateGameContent never throws - it falls back to a local hand-authored
+  // pair internally if every AI provider tier is exhausted.
+  const { word: cleanWord, mysteryHook, stories, takeaways } = await generateGameContent(
+    category,
+    currentLevel,
+    allExcluded
+  );
 
-Requirements:
-* Return ONLY valid raw JSON.
-* Do NOT return markdown.
-* Do NOT return explanations.
-* Do NOT return code fences.
-* The response must match this schema exactly:
-{
-  "word": "<secret_word>",
-  "stories": [
-    "<clue_1>",
-    "<clue_2>",
-    "<clue_3>"
-  ]
-}
+  const serializedContent = JSON.stringify({ category, mysteryHook, stories, takeaways });
 
-Rules:
-* The word must be a single lowercase noun.
-* The word must contain only letters a-z.
-* The word must be between 3 and 20 characters.
-* The secret word MUST NOT be any of these previously solved words: [${allExcluded.map(w => `"${w}"`).join(", ")}].
-* The stories array must contain exactly 3 strings.
-* Each story must be unique.
-* Do not include the secret word in any story.
-* Write natural, fluent English.
-* Use correct spelling and grammar.
-* Every story must start with a capital letter.
-* Every story must end with punctuation.
-
-Vocabulary Selection Bands:
-* LEVELS 1-5: Very common everyday nouns (e.g. apple, chair, clock, garden).
-* LEVELS 6-10: Common but less obvious nouns (e.g. harbor, glacier, artifact, compass).
-* LEVELS 11-20: Educational, scientific, historical, geographical nouns (e.g. labyrinth, telescope, velocity, catalyst).
-* LEVELS 21-35: Advanced concrete nouns (e.g. aqueduct, monastery, observatory, citadel).
-* LEVELS 36-50: Difficult concrete nouns (e.g. parchment, reliquary, catacomb, obelisk).
-* LEVELS 51-70: Advanced concrete nouns. Rare, university-level vocabulary. Avoid household objects, common animals, or common foods.
-* LEVELS 71-90: Scientific and historical nouns. Not commonly used in daily speech.
-* LEVELS 91+: Abstract concepts (e.g. serendipity, equilibrium, anomaly, paradox, symmetry).
-
-Clue Difficulty and Strength Scaling:
-* LEVELS 1-10: Clue 1 = direct, Clue 2 = moderate, Clue 3 = direct. Use direct descriptions, utility based, physical appearance.
-* LEVELS 11-35: Clue 1 = indirect, Clue 2 = indirect, Clue 3 = moderate. Use atmospheric, indirect, contextual clues. Avoid naming associated objects. (Good clue: "Generations have relied upon it as a point of arrival after long and uncertain journeys.")
-* LEVELS 36+: All 3 clues MUST be highly indirect. Use narrative, symbolic, historical, abstract, puzzle-like clues. Never reveal purpose, function, location, or obvious associations.
-
-GLOBAL RULES:
-* DO NOT reveal the answer.
-* DO NOT reveal direct synonyms.
-* DO NOT reveal obvious related objects.
-* DO NOT reveal famous examples.
-* DO NOT reveal defining characteristics.
-* DO NOT create clues that instantly identify the answer.
-* Generate clues appropriate to the requested level. Higher levels must produce significantly harder words and significantly more indirect clues.
-
-Example of a Good indirect clue: "The passage of time has transformed it from a practical necessity into a symbol of another age." or "It stands as a silent witness to countless arrivals and departures."
-Example of a Bad direct clue: "Ships arrive here." or "Fishermen unload their catch here."
-
-Return JSON only.
-`.trim();
-
-  try {
-    const parsed = await callAIProvider<{ word: string; stories: string[] }>(prompt, "WordGen");
-    const cleanWord = parsed.word.trim().toLowerCase();
-    
-    // Redact AI word leaks instead of rejecting them (saves API quota)
-    let stories = (parsed.stories || []).map((s: string) => redactSecretWord(s.trim(), cleanWord)).filter(Boolean);
-
-    const serializedStories = JSON.stringify(stories);
-
-    console.log("[contextle][DB] Saving AI data to profile:", {
-      id: user.id,
-      active_word: cleanWord,
-      stories_count: stories.length
-    });
-
-    const { error: updateError } = await adminClient
-      .from("profiles")
-      .update({
-        active_word: cleanWord,
-        current_story: serializedStories,
-        updated_at: new Date().toISOString(),
-      })
-      .eq("id", user.id);
-
-    if (updateError) {
-      console.error("[contextle] Failed to save AI generated word to profile:", updateError);
-      await adminClient.from("profiles").update({ active_word: null }).eq("id", user.id).eq("active_word", "generating");
-      return NextResponse.json(
-        { success: false, error: "Failed to start game in database." },
-        { status: 500 }
-      );
-    }
-
-    return NextResponse.json({
-      success: true,
-      stories,
-    });
-
-  } catch (error) {
-    // ── TIER 5: EMERGENCY LOCAL FALLBACK (Fallback of last resort if all APIs fail) ──
-    console.warn("[contextle] All AI routes failed or keys missing. Using local emergency fallback.", error);
-    try {
-      return await getFallbackWord(adminClient, user.id, currentLevel, allExcluded);
-    } catch {
-      // Release lock on final failure
-      await adminClient.from("profiles").update({ active_word: null }).eq("id", user.id).eq("active_word", "generating");
-      return NextResponse.json(
-        { success: false, error: "All generation sources failed." },
-        { status: 500 }
-      );
-    }
-  }
-}
-
-// ── Emergency Local Word Selection Function ──────────────────────────────────
-async function getFallbackWord(
-  adminClient: SupabaseClient,
-  userId: string,
-  level: number,
-  excludeWords: string[] = []
-): Promise<NextResponse> {
-  let list = EASY_PAIRS;
-  if (level >= 6 && level <= 15) {
-    list = MEDIUM_PAIRS;
-  } else if (level > 15) {
-    list = HARD_PAIRS;
-  }
-
-  let filteredList = list.filter(pair => !excludeWords.includes(pair.word));
-  if (filteredList.length === 0) {
-    filteredList = list;
-  }
-
-  const fallback = filteredList[Math.floor(Math.random() * filteredList.length)];
-  const serializedStories = JSON.stringify(fallback.stories);
+  console.log("[contextle][DB] Saving generated content to profile:", {
+    id: user.id,
+    active_word: cleanWord,
+    category,
+    stories_count: stories.length
+  });
 
   const { error: updateError } = await adminClient
     .from("profiles")
     .update({
-      active_word: fallback.word,
-      current_story: serializedStories,
-      updated_at: new Date().toISOString()
+      active_word: cleanWord,
+      current_story: serializedContent,
+      updated_at: new Date().toISOString(),
     })
-    .eq("id", userId);
+    .eq("id", user.id);
 
   if (updateError) {
-    console.error("[contextle] Failed to save fallback word/stories to profile:", updateError);
+    console.error("[contextle] Failed to save generated word to profile:", updateError);
+    await adminClient.from("profiles").update({ active_word: null }).eq("id", user.id).eq("active_word", "generating");
     return NextResponse.json(
       { success: false, error: "Failed to start game in database." },
       { status: 500 }
@@ -371,7 +240,10 @@ async function getFallbackWord(
 
   return NextResponse.json({
     success: true,
-    stories: fallback.stories
+    category,
+    mysteryHook,
+    stories,
+    takeaways,
   });
 }
 

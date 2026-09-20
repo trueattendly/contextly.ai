@@ -2,372 +2,482 @@ export interface FallbackPair {
   word: string;
   stories: string[];
 }
-
 export const EASY_PAIRS: FallbackPair[] = [
-  { 
-    word: 'apple', 
-    stories: [
-      'According to popular legend, one of these falling from a tree inspired Isaac Newton\'s theory of gravity.',
-      'A crisp, sweet fruit often used to bake delicious warm pies or pressed into fresh autumn cider.',
-      'It grows on trees, comes in red, green, or yellow, and is said to keep the doctor away when eaten daily.'
-    ] 
-  },
-  { 
-    word: 'guitar', 
-    stories: [
-      'It has a long wooden neck with frets where you press your fingers to alter the pitch of the strings.',
-      'Often played around campfires, it can be strummed to accompany singing and acoustic melodies.',
-      'This acoustic instrument has six strings and a hollow wooden body that makes music when plucked.'
-    ] 
-  },
-  { 
-    word: 'ocean', 
-    stories: [
-      'Its waves crash against sandy shores, attracting surfers and beachgoers worldwide.',
-      'It is home to coral reefs, sharks, whales, and billions of other marine organisms.',
-      'A vast body of salty water that covers most of our planet and is governed by the lunar tides.'
-    ] 
-  },
-  {
-    word: 'mountain',
-    stories: [
-      'A massive landform that rises high above its surroundings, often having a steep slope and a peak.',
-      'Climbers challenge themselves to reach its summit, wearing specialized gear to survive the thin air.',
-      'A giant peak of rock and earth, often covered in snow at the top, towering over valleys.'
-    ]
-  },
-  {
-    word: 'camera',
-    stories: [
-      'A device used to capture moments in time, freezing them into visual records.',
-      'It uses a lens to focus light onto a digital sensor or a strip of chemical film.',
-      'You press a button on this device to take a photograph or record a video.'
-    ]
-  },
-  {
-    word: 'bicycle',
-    stories: [
-      'A lightweight vehicle with two wheels placed one behind the other.',
-      'It is powered entirely by the rider turning pedals with their feet.',
-      'You steer it using handlebars and balance on it to ride down streets or paths.'
-    ]
-  },
-  {
-    word: 'umbrella',
-    stories: [
-      'A folding canopy of fabric on a metal frame, supported by a central rod.',
-      'It is carried in the hand to protect against rain or hot sunlight.',
-      'You pop it open when the sky turns gray to keep yourself dry while walking.'
-    ]
-  },
-  {
-    word: 'clock',
-    stories: [
-      'A device that measures and displays the passage of hours and minutes.',
-      'It has a face with rotating hands, or a digital screen showing numbers.',
-      'It hangs on walls or sits on nightstands, ticking away the seconds of the day.'
-    ]
-  },
-  {
-    word: 'telephone',
-    stories: [
-      'An electronic device used to talk to people who are far away.',
-      'It has a screen, a microphone, and a speaker, and connects to wireless networks.',
-      'You use it to make calls, send text messages, or browse the internet from your pocket.'
-    ]
-  },
-  {
-    word: 'window',
-    stories: [
-      'An opening in a wall or vehicle, fitted with glass in a frame.',
-      'It allows light and fresh air to enter a room while keeping the weather out.',
-      'You look through it to see what is happening outside without leaving the house.'
-    ]
-  },
-  {
-    word: 'garden',
-    stories: [
-      'A planned space outdoors set aside for the cultivation of plants.',
-      'It is filled with soil, blooming flowers, fresh vegetables, and buzzing insects.',
-      'A peaceful green area behind a house where plants are watered and tended.'
-    ]
-  },
-  {
-    word: 'library',
-    stories: [
-      'A building or room containing collections of books for reading or borrowing.',
-      'It is a quiet place designed for study, research, and quiet contemplation.',
-      'A place where shelves are filled with stories, knowledge, and history.'
-    ]
-  },
-  {
-    word: 'kitchen',
-    stories: [
-      'A room or area where food is prepared and cooked.',
-      'It typically contains a stove, an oven, a refrigerator, and a sink.',
-      'The heart of the home where meals are made and delicious smells originate.'
-    ]
-  },
-  {
-    word: 'pocket',
-    stories: [
-      'A small bag-like patch sewn into or onto a garment for carrying small items.',
-      'It is the perfect size for holding keys, coins, or a smartphone.',
-      'A convenient storage pouch built directly into your trousers or jacket.'
-    ]
-  },
-  {
-    word: 'blanket',
-    stories: [
-      'A large piece of soft fabric, typically used for warmth.',
-      'It is spread over a bed or wrapped around a person sitting on a sofa.',
-      'A cozy cover that keeps you warm and snug while sleeping on a cold night.'
-    ]
-  }
+  { word: 'apple', stories: ['A crisp, sweet fruit often used to bake delicious warm pies or pressed into fresh autumn cider.', 'It grows on trees, comes in red, green, or yellow, and is said to keep the doctor away when eaten daily.', 'According to popular legend, one of these falling from a tree inspired Isaac Newton\'s theory of gravity.'] },
+  { word: 'guitar', stories: ['It has a long wooden neck with frets where you press your fingers to alter the pitch of the strings.', 'Often played around campfires, it can be strummed to accompany singing and acoustic melodies.', 'This acoustic instrument has six strings and a hollow wooden body that makes music when plucked.'] },
+  { word: 'ocean', stories: ['Its waves crash against sandy shores, attracting surfers and beachgoers worldwide.', 'It is home to coral reefs, sharks, whales, and billions of other marine organisms.', 'A vast body of salty water that covers most of our planet and is governed by the lunar tides.'] },
+  { word: 'mountain', stories: ['A massive landform that rises high above its surroundings, often having a steep slope and a peak.', 'Climbers challenge themselves to reach its summit, wearing specialized gear to survive the thin air.', 'A giant peak of rock and earth, often covered in snow at the top, towering over valleys.'] },
+  { word: 'camera', stories: ['A device used to capture moments in time, freezing them into visual records.', 'It uses a lens to focus light onto a digital sensor or a strip of chemical film.', 'You press a button on this device to take a photograph or record a video.'] },
+  { word: 'bicycle', stories: ['A lightweight vehicle with two wheels placed one behind the other.', 'It is powered entirely by the rider turning pedals with their feet.', 'You steer it using handlebars and balance on it to ride down streets or paths.'] },
+  { word: 'umbrella', stories: ['A folding canopy of fabric on a metal frame, supported by a central rod.', 'It is carried in the hand to protect against rain or hot sunlight.', 'You pop it open when the sky turns gray to keep yourself dry while walking.'] },
+  { word: 'clock', stories: ['A device that measures and displays the passage of hours and minutes.', 'It has a face with rotating hands, or a digital screen showing numbers.', 'It hangs on walls or sits on nightstands, ticking away the seconds of the day.'] },
+  { word: 'telephone', stories: ['An electronic device used to talk to people who are far away.', 'It has a screen, a microphone, and a speaker, and connects to wireless networks.', 'You use it to make calls, send text messages, or browse the internet from your pocket.'] },
+  { word: 'window', stories: ['An opening in a wall or vehicle, fitted with glass in a frame.', 'It allows light and fresh air to enter a room while keeping the weather out.', 'You look through it to see what is happening outside without leaving the house.'] },
+  { word: 'garden', stories: ['A planned space outdoors set aside for the cultivation of plants.', 'It is filled with soil, blooming flowers, fresh vegetables, and buzzing insects.', 'A peaceful green area behind a house where plants are watered and tended.'] },
+  { word: 'library', stories: ['A building or room containing collections of books for reading or borrowing.', 'It is a quiet place designed for study, research, and quiet contemplation.', 'A place where shelves are filled with stories, knowledge, and history.'] },
+  { word: 'kitchen', stories: ['A room or area where food is prepared and cooked.', 'It typically contains a stove, an oven, a refrigerator, and a sink.', 'The heart of the home where meals are made and delicious smells originate.'] },
+  { word: 'pocket', stories: ['A small bag-like patch sewn into or onto a garment for carrying small items.', 'It is the perfect size for holding keys, coins, or a smartphone.', 'A convenient storage pouch built directly into your trousers or jacket.'] },
+  { word: 'blanket', stories: ['A large piece of soft fabric, typically used for warmth.', 'It is spread over a bed or wrapped around a person sitting on a sofa.', 'A cozy cover that keeps you warm and snug while sleeping on a cold night.'] },
+  { word: 'chair', stories: ['A piece of furniture designed for one person to sit on.', 'It typically has a back, legs, and sometimes armrests for support.', 'You pull one of these up to a table to eat, work, or relax.'] },
+  { word: 'table', stories: ['A piece of furniture with a flat top and one or more legs.', 'It provides a surface for eating, writing, or placing objects.', 'You gather around it for meals, meetings, or family game nights.'] },
+  { word: 'pencil', stories: ['A writing instrument with a thin core of graphite inside a wooden cylinder.', 'It can be erased, unlike a pen, making it ideal for sketching and drafting.', 'You sharpen it when the tip becomes dull to continue writing or drawing.'] },
+  { word: 'book', stories: ['A set of printed pages bound together within a cover.', 'It can contain a story, facts, poems, or pictures for readers to enjoy.', 'You open it to read words that transport you to another world.'] },
+  { word: 'shoe', stories: ['An outer covering for the foot, typically made of leather or fabric.', 'It protects your feet from rough ground, cold, and sharp objects.', 'You tie its laces or slip it on before going outside.'] },
+  { word: 'hat', stories: ['A covering for the head, often worn for warmth, fashion, or protection.', 'It can have a brim to shade your eyes from the sun.', 'You place it on your head before stepping out on a sunny or cold day.'] },
+  { word: 'bread', stories: ['A staple food made from flour and water, usually baked in an oven.', 'It can be sliced, toasted, or used to make sandwiches.', 'You spread butter or jam on it for a simple breakfast.'] },
+  { word: 'milk', stories: ['A white liquid produced by mammals to feed their young.', 'It is rich in calcium and often fortified with vitamin D.', 'You pour it over cereal or drink it with cookies.'] },
+  { word: 'water', stories: ['A clear, tasteless liquid essential for all known forms of life.', 'It covers most of the Earth and falls from the sky as rain.', 'You drink it to stay hydrated, especially after exercise.'] },
+  { word: 'fire', stories: ['A chemical reaction that produces heat and light, often with flames.', 'It can cook food, warm a room, or be dangerous if uncontrolled.', 'You gather around it for warmth on a cold night.'] },
+  { word: 'rain', stories: ['Water droplets that fall from clouds in the sky.', 'It nourishes plants and fills rivers, lakes, and reservoirs.', 'You carry an umbrella or wear a raincoat when it starts.'] },
+  { word: 'snow', stories: ['Frozen water crystals that fall from clouds as soft white flakes.', 'It blankets the ground in white and is perfect for skiing or snowmen.', 'You bundle up in warm clothes to play in it during winter.'] },
+  { word: 'wind', stories: ['The natural movement of air across the Earth\'s surface.', 'It can be gentle breeze or a powerful gust that bends trees.', 'You feel it on your face and see it push sailboats across water.'] },
+  { word: 'sun', stories: ['The star at the center of our solar system that gives us light and heat.', 'It rises in the east and sets in the west each day.', 'You wear sunglasses to protect your eyes from its bright rays.'] },
+  { word: 'moon', stories: ['The natural satellite that orbits the Earth.', 'It controls the tides and lights up the night sky.', 'You see it change shape from crescent to full over a month.'] },
+  { word: 'star', stories: ['A luminous sphere of plasma held together by its own gravity.', 'It twinkles in the night sky and can be seen from millions of miles away.', 'You wish upon one when you see a shooting light streak across the dark.'] },
+  { word: 'cloud', stories: ['A visible mass of water droplets or ice crystals suspended in the sky.', 'It can be fluffy and white or dark and stormy.', 'You look up and imagine shapes in its ever-changing form.'] },
+  { word: 'tree', stories: ['A tall plant with a trunk, branches, and leaves.', 'It provides shade, oxygen, and homes for birds and squirrels.', 'You climb it as a child or sit under it for a picnic.'] },
+  { word: 'flower', stories: ['The colorful reproductive part of a plant.', 'It attracts bees and butterflies with its petals and scent.', 'You pick one to give to someone you love or put in a vase.'] },
+  { word: 'grass', stories: ['A green plant with narrow leaves that covers lawns and fields.', 'It is soft to walk on and is mowed to keep it neat.', 'You lie on it to watch clouds or play sports.'] },
+  { word: 'bird', stories: ['A feathered animal with wings, a beak, and the ability to fly.', 'It builds nests, sings songs, and migrates with the seasons.', 'You spot one at a feeder or soaring high in the sky.'] },
+  { word: 'fish', stories: ['An aquatic animal with gills, fins, and scales.', 'It swims in water and comes in countless shapes and colors.', 'You catch one on a hook or watch it in an aquarium.'] },
+  { word: 'dog', stories: ['A domesticated mammal known as man\'s best friend.', 'It barks, wags its tail, and loves to play fetch.', 'You take it for a walk or teach it to sit and stay.'] },
+  { word: 'cat', stories: ['A small domesticated carnivorous mammal with soft fur.', 'It purrs, meows, and loves to nap in sunny spots.', 'You pet it and hear it purr while it curls up on your lap.'] },
+  { word: 'horse', stories: ['A large domesticated mammal with hooves and a mane.', 'It can be ridden, raced, or used to pull carts.', 'You feed it carrots and brush its long tail.'] },
+  { word: 'cow', stories: ['A large domesticated mammal raised for milk and meat.', 'It grazes in fields and produces creamy white milk.', 'You see it chewing cud in a pasture.'] },
+  { word: 'pig', stories: ['A domesticated mammal with a snout and curly tail.', 'It is known for rolling in mud to stay cool.', 'You hear it oink and snort on a farm.'] },
+  { word: 'sheep', stories: ['A domesticated mammal with a thick woolly coat.', 'Its wool is sheared and spun into warm clothing.', 'You count them to fall asleep at night.'] },
+  { word: 'duck', stories: ['A waterbird with a broad bill and webbed feet.', 'It quacks and swims in ponds and rivers.', 'You feed it breadcrumbs at a park.'] },
+  { word: 'rabbit', stories: ['A small mammal with long ears and a fluffy tail.', 'It hops quickly and loves to eat carrots.', 'You keep one as a pet or see it in the wild.'] },
+  { word: 'mouse', stories: ['A small rodent with a pointed snout and long tail.', 'It squeaks and scurries quickly across the floor.', 'You use a computer one to click and scroll.'] },
+  { word: 'elephant', stories: ['A massive mammal with a trunk and large flapping ears.', 'It is the largest land animal and lives in herds.', 'You see it spray water with its trunk at the zoo.'] },
+  { word: 'lion', stories: ['A large wild cat with a golden mane and powerful roar.', 'It is called the king of the jungle and lives in prides.', 'You see it resting in the shade on a savanna.'] },
+  { word: 'tiger', stories: ['A large wild cat with orange fur and black stripes.', 'It is a solitary hunter and a strong swimmer.', 'You spot it stalking prey in the jungle.'] },
+  { word: 'bear', stories: ['A large mammal with thick fur and a short tail.', 'It hibernates in winter and loves honey and fish.', 'You see it catch salmon in a river.'] },
+  { word: 'wolf', stories: ['A wild canine that lives and hunts in packs.', 'It howls at the moon to communicate with its pack.', 'You hear its eerie call in the wilderness.'] },
+  { word: 'fox', stories: ['A small wild canine with a bushy tail and pointed ears.', 'It is clever and often nocturnal.', 'You see it dart across a field at dusk.'] },
+  { word: 'deer', stories: ['A hoofed mammal with antlers and slender legs.', 'It grazes in forests and leaps gracefully.', 'You spot one near a road at dawn.'] },
+  { word: 'frog', stories: ['An amphibian with smooth skin and long hind legs.', 'It croaks and leaps from lily pad to lily pad.', 'You catch one near a pond.'] },
+  { word: 'snake', stories: ['A long, legless reptile that slithers on the ground.', 'It sheds its skin and some species are venomous.', 'You see it coil up in the grass.'] },
+  { word: 'turtle', stories: ['A reptile with a hard shell and slow movement.', 'It can retract its head and legs for protection.', 'You see it sunning on a rock by a lake.'] },
+  { word: 'spider', stories: ['An eight-legged arachnid that spins webs.', 'It catches insects in its sticky silk.', 'You see it dangling from a thread in the corner.'] },
+  { word: 'bee', stories: ['A flying insect that collects nectar and pollen.', 'It lives in hives and makes honey.', 'You hear it buzz near flowers in spring.'] },
+  { word: 'ant', stories: ['A small insect that lives in colonies underground.', 'It is strong for its size and works as a team.', 'You see a line of them marching to a picnic.'] },
+  { word: 'butterfly', stories: ['An insect with colorful wings that flutters by day.', 'It starts as a caterpillar and undergoes metamorphosis.', 'You watch it land on a flower to sip nectar.'] },
+  { word: 'house', stories: ['A building where people live and feel safe.', 'It has rooms, a roof, and a door for entry.', 'You return to it at the end of the day.'] },
+  { word: 'door', stories: ['A movable barrier that opens and closes an entrance.', 'It has a handle, hinges, and sometimes a lock.', 'You knock on it before entering someone\'s home.'] },
+  { word: 'key', stories: ['A small metal object used to open a lock.', 'It has a unique pattern of ridges and grooves.', 'You keep it on a ring in your pocket or bag.'] },
+  { word: 'chair', stories: ['A seat for one person, typically with a back and legs.', 'It can be made of wood, metal, or plastic.', 'You pull one out to sit at a desk or table.'] },
+  { word: 'bed', stories: ['A piece of furniture used for sleeping and resting.', 'It has a mattress, pillows, and blankets.', 'You climb into it at night and pull up the covers.'] },
+  { word: 'lamp', stories: ['A device that produces light using electricity or fuel.', 'It has a base, a stem, and a shade or bulb.', 'You switch it on to read or brighten a dark room.'] },
+  { word: 'mirror', stories: ['A smooth surface that reflects a clear image.', 'It is made of glass with a silvered backing.', 'You look into it to check your appearance.'] },
+  { word: 'soap', stories: ['A substance used with water for washing and cleaning.', 'It creates lather and removes dirt and germs.', 'You rub it on your hands to keep them clean.'] },
+  { word: 'towel', stories: ['A piece of absorbent fabric used for drying.', 'It can be soft and fluffy or thin and quick-drying.', 'You wrap it around yourself after a shower.'] },
+  { word: 'brush', stories: ['A tool with bristles used for cleaning or grooming.', 'It can be used on hair, teeth, or paint.', 'You use it every morning to tidy your hair.'] },
+  { word: 'comb', stories: ['A flat tool with narrow teeth for untangling hair.', 'It fits in a pocket or purse for quick touch-ups.', 'You run it through your hair to smooth it.'] },
+  { word: 'plate', stories: ['A flat, round dish used for serving food.', 'It can be made of ceramic, glass, or paper.', 'You set it on the table before a meal.'] },
+  { word: 'cup', stories: ['A small open container used for drinking.', 'It has a handle and holds hot or cold beverages.', 'You sip coffee or tea from it in the morning.'] },
+  { word: 'bowl', stories: ['A round, deep dish used for holding food or liquid.', 'It is perfect for soup, cereal, or salad.', 'You eat your breakfast from it with a spoon.'] },
+  { word: 'spoon', stories: ['A utensil with a small shallow bowl at the end of a handle.', 'It is used for eating soup, stirring, or measuring.', 'You scoop sugar into your coffee with it.'] },
+  { word: 'fork', stories: ['A utensil with prongs used for eating or serving.', 'It can pierce food and lift it to your mouth.', 'You use it to eat pasta or salad.'] },
+  { word: 'knife', stories: ['A tool with a sharp blade used for cutting.', 'It can slice, dice, or spread food.', 'You use it to cut bread or vegetables.'] },
+  { word: 'bottle', stories: ['A narrow-necked container for liquids.', 'It can be made of glass or plastic and holds water, juice, or oil.', 'You twist off its cap to pour a drink.'] },
+  { word: 'box', stories: ['A container with flat sides and a lid.', 'It is used for storage, shipping, or gifts.', 'You open it to see what is inside.'] },
+  { word: 'bag', stories: ['A flexible container with an opening at the top.', 'It is used to carry groceries, clothes, or books.', 'You sling it over your shoulder or hold it by the handles.'] },
+  { word: 'ball', stories: ['A round object used in games and sports.', 'It can bounce, roll, or be thrown.', 'You kick or catch it during play.'] },
+  { word: 'doll', stories: ['A small model of a human figure used as a toy.', 'It can be dressed, posed, and cared for.', 'You give it a name and take it everywhere.'] },
+  { word: 'kite', stories: ['A lightweight frame covered in fabric that flies in the wind.', 'It is tethered to a string held by the flyer.', 'You run with it to launch it into the sky.'] },
+  { word: 'balloon', stories: ['A flexible rubber bag that inflates with air or gas.', 'It can be twisted into shapes or released to float.', 'You blow one up for a party.'] },
+  { word: 'cake', stories: ['A sweet baked dessert made from flour, sugar, and eggs.', 'It is often frosted and decorated for celebrations.', 'You blow out candles on it on your birthday.'] },
+  { word: 'cookie', stories: ['A small, flat, sweet baked treat.', 'It can contain chocolate chips, nuts, or raisins.', 'You dunk it in milk for a snack.'] },
+  { word: 'candy', stories: ['A sweet confection made with sugar or syrup.', 'It comes in many flavors, shapes, and colors.', 'You unwrap it and pop it in your mouth.'] },
+  { word: 'ice cream', stories: ['A frozen dessert made from dairy or plant-based cream.', 'It comes in flavors like vanilla, chocolate, and strawberry.', 'You lick it from a cone on a hot day.'] },
+  { word: 'pizza', stories: ['A savory dish of Italian origin with a round flatbread base.', 'It is topped with tomato sauce, cheese, and various toppings.', 'You share a slice with friends at a party.'] },
+  { word: 'sandwich', stories: ['A food item consisting of two slices of bread with a filling.', 'It can contain meat, cheese, vegetables, or spreads.', 'You pack one in your lunchbox for school or work.'] },
+  { word: 'soup', stories: ['A liquid dish made by boiling ingredients in water or broth.', 'It can be served hot or cold and is often eaten with a spoon.', 'You warm up with a bowl of it on a cold day.'] },
+  { word: 'salad', stories: ['A dish of mixed raw or cooked vegetables, often with dressing.', 'It can include lettuce, tomatoes, cucumbers, and more.', 'You eat it as a healthy side or main course.'] },
+  { word: 'fruit', stories: ['The sweet, edible part of a plant that contains seeds.', 'It can be eaten fresh, dried, or cooked.', 'You bite into a juicy apple or peel a banana.'] },
+  { word: 'vegetable', stories: ['A plant or part of a plant used as food.', 'It can be eaten raw, cooked, or juiced.', 'You chop carrots and broccoli for a stir-fry.'] },
+  { word: 'rice', stories: ['A staple grain that is the seed of a grass plant.', 'It is cooked by boiling and served with many dishes.', 'You eat it with curry or stir-fry.'] },
+  { word: 'pasta', stories: ['A type of Italian food made from durum wheat flour and water.', 'It comes in shapes like spaghetti, penne, and fusilli.', 'You boil it and top it with sauce and cheese.'] },
+  { word: 'egg', stories: ['An oval object laid by birds, reptiles, and fish.', 'It has a shell, white, and yolk and is a versatile food.', 'You scramble or fry it for breakfast.'] },
+  { word: 'cheese', stories: ['A dairy product made from milk curds.', 'It comes in many varieties like cheddar, brie, and mozzarella.', 'You slice it for a sandwich or melt it on pizza.'] },
+  { word: 'butter', stories: ['A dairy product made by churning cream.', 'It is spread on bread or used in cooking and baking.', 'You melt it in a pan before frying eggs.'] },
+  { word: 'honey', stories: ['A sweet, sticky substance made by bees from nectar.', 'It is used as a spread, sweetener, or remedy.', 'You drizzle it over yogurt or tea.'] },
+  { word: 'sugar', stories: ['A sweet crystalline substance used to flavor food and drinks.', 'It is extracted from sugarcane or sugar beet.', 'You add a spoonful to your coffee or tea.'] },
+  { word: 'salt', stories: ['A white crystalline mineral used to season and preserve food.', 'It is essential for life and enhances flavor.', 'You sprinkle it on fries or popcorn.'] },
+  { word: 'pepper', stories: ['A spice made from ground peppercorns.', 'It adds heat and flavor to dishes.', 'You grind it over your salad or steak.'] },
+  { word: 'oil', stories: ['A viscous liquid fat used in cooking and frying.', 'It can be extracted from plants, seeds, or animals.', 'You heat it in a pan before sautéing vegetables.'] },
+  { word: 'vinegar', stories: ['A sour liquid made by fermenting ethanol.', 'It is used in cooking, pickling, and cleaning.', 'You mix it with oil to make salad dressing.'] },
+  { word: 'sauce', stories: ['A liquid or semi-solid food served with or used in cooking.', 'It can be savory, sweet, or spicy.', 'You pour it over pasta or dip fries in it.'] },
+  { word: 'soup', stories: ['A liquid dish made by boiling ingredients in water or broth.', 'It can be served hot or cold and is often eaten with a spoon.', 'You warm up with a bowl of it on a cold day.'] },
+  { word: 'tea', stories: ['A hot beverage made by steeping dried tea leaves in water.', 'It can be black, green, or herbal and served with milk or lemon.', 'You sip it from a cup to relax.'] },
+  { word: 'coffee', stories: ['A brewed beverage made from roasted coffee beans.', 'It contains caffeine and is often served hot.', 'You drink it in the morning to wake up.'] },
+  { word: 'juice', stories: ['A liquid extracted from fruits or vegetables.', 'It is often drunk as a beverage and can be fresh or packaged.', 'You pour a glass of orange juice for breakfast.'] },
+  { word: 'soda', stories: ['A carbonated soft drink sweetened and flavored.', 'It comes in many brands and flavors.', 'You hear it fizz when you open the can.'] },
+  { word: 'milk', stories: ['A white liquid produced by mammals to feed their young.', 'It is rich in calcium and often fortified with vitamin D.', 'You pour it over cereal or drink it with cookies.'] },
+  { word: 'water', stories: ['A clear, tasteless liquid essential for all known forms of life.', 'It covers most of the Earth and falls from the sky as rain.', 'You drink it to stay hydrated, especially after exercise.'] },
+  { word: 'fire', stories: ['A chemical reaction that produces heat and light, often with flames.', 'It can cook food, warm a room, or be dangerous if uncontrolled.', 'You gather around it for warmth on a cold night.'] },
+  { word: 'rain', stories: ['Water droplets that fall from clouds in the sky.', 'It nourishes plants and fills rivers, lakes, and reservoirs.', 'You carry an umbrella or wear a raincoat when it starts.'] },
+  { word: 'snow', stories: ['Frozen water crystals that fall from clouds as soft white flakes.', 'It blankets the ground in white and is perfect for skiing or snowmen.', 'You bundle up in warm clothes to play in it during winter.'] },
+  { word: 'wind', stories: ['The natural movement of air across the Earth\'s surface.', 'It can be gentle breeze or a powerful gust that bends trees.', 'You feel it on your face and see it push sailboats across water.'] },
+  { word: 'sun', stories: ['The star at the center of our solar system that gives us light and heat.', 'It rises in the east and sets in the west each day.', 'You wear sunglasses to protect your eyes from its bright rays.'] },
+  { word: 'moon', stories: ['The natural satellite that orbits the Earth.', 'It controls the tides and lights up the night sky.', 'You see it change shape from crescent to full over a month.'] },
+  { word: 'star', stories: ['A luminous sphere of plasma held together by its own gravity.', 'It twinkles in the night sky and can be seen from millions of miles away.', 'You wish upon one when you see a shooting light streak across the dark.'] },
+  { word: 'cloud', stories: ['A visible mass of water droplets or ice crystals suspended in the sky.', 'It can be fluffy and white or dark and stormy.', 'You look up and imagine shapes in its ever-changing form.'] },
+  { word: 'tree', stories: ['A tall plant with a trunk, branches, and leaves.', 'It provides shade, oxygen, and homes for birds and squirrels.', 'You climb it as a child or sit under it for a picnic.'] },
+  { word: 'flower', stories: ['The colorful reproductive part of a plant.', 'It attracts bees and butterflies with its petals and scent.', 'You pick one to give to someone you love or put in a vase.'] },
+  { word: 'grass', stories: ['A green plant with narrow leaves that covers lawns and fields.', 'It is soft to walk on and is mowed to keep it neat.', 'You lie on it to watch clouds or play sports.'] },
+  { word: 'bird', stories: ['A feathered animal with wings, a beak, and the ability to fly.', 'It builds nests, sings songs, and migrates with the seasons.', 'You spot one at a feeder or soaring high in the sky.'] },
+  { word: 'fish', stories: ['An aquatic animal with gills, fins, and scales.', 'It swims in water and comes in countless shapes and colors.', 'You catch one on a hook or watch it in an aquarium.'] },
+  { word: 'dog', stories: ['A domesticated mammal known as man\'s best friend.', 'It barks, wags its tail, and loves to play fetch.', 'You take it for a walk or teach it to sit and stay.'] },
+  { word: 'cat', stories: ['A small domesticated carnivorous mammal with soft fur.', 'It purrs, meows, and loves to nap in sunny spots.', 'You pet it and hear it purr while it curls up on your lap.'] },
+  { word: 'horse', stories: ['A large domesticated mammal with hooves and a mane.', 'It can be ridden, raced, or used to pull carts.', 'You feed it carrots and brush its long tail.'] },
+  { word: 'cow', stories: ['A large domesticated mammal raised for milk and meat.', 'It grazes in fields and produces creamy white milk.', 'You see it chewing cud in a pasture.'] },
+  { word: 'pig', stories: ['A domesticated mammal with a snout and curly tail.', 'It is known for rolling in mud to stay cool.', 'You hear it oink and snort on a farm.'] },
+  { word: 'sheep', stories: ['A domesticated mammal with a thick woolly coat.', 'Its wool is sheared and spun into warm clothing.', 'You count them to fall asleep at night.'] },
+  { word: 'duck', stories: ['A waterbird with a broad bill and webbed feet.', 'It quacks and swims in ponds and rivers.', 'You feed it breadcrumbs at a park.'] },
+  { word: 'rabbit', stories: ['A small mammal with long ears and a fluffy tail.', 'It hops quickly and loves to eat carrots.', 'You keep one as a pet or see it in the wild.'] },
+  { word: 'mouse', stories: ['A small rodent with a pointed snout and long tail.', 'It squeaks and scurries quickly across the floor.', 'You use a computer one to click and scroll.'] },
+  { word: 'elephant', stories: ['A massive mammal with a trunk and large flapping ears.', 'It is the largest land animal and lives in herds.', 'You see it spray water with its trunk at the zoo.'] },
+  { word: 'lion', stories: ['A large wild cat with a golden mane and powerful roar.', 'It is called the king of the jungle and lives in prides.', 'You see it resting in the shade on a savanna.'] },
+  { word: 'tiger', stories: ['A large wild cat with orange fur and black stripes.', 'It is a solitary hunter and a strong swimmer.', 'You spot it stalking prey in the jungle.'] },
+  { word: 'bear', stories: ['A large mammal with thick fur and a short tail.', 'It hibernates in winter and loves honey and fish.', 'You see it catch salmon in a river.'] },
+  { word: 'wolf', stories: ['A wild canine that lives and hunts in packs.', 'It howls at the moon to communicate with its pack.', 'You hear its eerie call in the wilderness.'] },
+  { word: 'fox', stories: ['A small wild canine with a bushy tail and pointed ears.', 'It is clever and often nocturnal.', 'You see it dart across a field at dusk.'] },
+  { word: 'deer', stories: ['A hoofed mammal with antlers and slender legs.', 'It grazes in forests and leaps gracefully.', 'You spot one near a road at dawn.'] },
+  { word: 'frog', stories: ['An amphibian with smooth skin and long hind legs.', 'It croaks and leaps from lily pad to lily pad.', 'You catch one near a pond.'] },
+  { word: 'snake', stories: ['A long, legless reptile that slithers on the ground.', 'It sheds its skin and some species are venomous.', 'You see it coil up in the grass.'] },
+  { word: 'turtle', stories: ['A reptile with a hard shell and slow movement.', 'It can retract its head and legs for protection.', 'You see it sunning on a rock by a lake.'] },
+  { word: 'spider', stories: ['An eight-legged arachnid that spins webs.', 'It catches insects in its sticky silk.', 'You see it dangling from a thread in the corner.'] },
+  { word: 'bee', stories: ['A flying insect that collects nectar and pollen.', 'It lives in hives and makes honey.', 'You hear it buzz near flowers in spring.'] },
+  { word: 'ant', stories: ['A small insect that lives in colonies underground.', 'It is strong for its size and works as a team.', 'You see a line of them marching to a picnic.'] },
+  { word: 'butterfly', stories: ['An insect with colorful wings that flutters by day.', 'It starts as a caterpillar and undergoes metamorphosis.', 'You watch it land on a flower to sip nectar.'] }
 ];
 
 export const MEDIUM_PAIRS: FallbackPair[] = [
-  { 
-    word: 'glacier', 
-    stories: [
-      'Massive chunks of ice calve off the edges of this structure, crashing dramatically into the sea.',
-      'It contains the largest reservoir of fresh water on Earth and is highly sensitive to climate shifts.',
-      'A colossal, slow-moving river of ancient ice that carves valleys out of mountains over thousands of years.'
-    ] 
-  },
-  { 
-    word: 'gravity', 
-    stories: [
-      'Einstein described it as a curvature of spacetime caused by mass and energy.',
-      'The strength of this force depends on the mass of the object; it is much stronger on Jupiter than on Mars.',
-      'The invisible pulling force that prevents us from floating away into space and holds the moon in its orbit.'
-    ] 
-  },
-  {
-    word: 'fossil',
-    stories: [
-      'The preserved remains or impressions of prehistoric organisms embedded in rock.',
-      'Paleontologists dig deep into the earth to find these relics of ancient life.',
-      'A petrified bone, shell, or leaf imprint that tells the story of life millions of years ago.'
-    ]
-  },
-  {
-    word: 'silhouette',
-    stories: [
-      'The dark shape and outline of someone or something visible against a brighter background.',
-      'A shadow-like profile portrait, named after an 18th-century French finance minister.',
-      'A dark outline seen when a light shines from directly behind an object.'
-    ]
-  },
-  {
-    word: 'horizon',
-    stories: [
-      'The line at which the earth\'s surface and the sky appear to meet.',
-      'Sailors look toward this distant boundary to spot incoming ships or land.',
-      'The apparent line where the land or sea seems to touch the sky.'
-    ]
-  },
-  {
-    word: 'labyrinth',
-    stories: [
-      'A complicated irregular network of passages or paths in which it is difficult to find one\'s way.',
-      'In Greek mythology, it was built by Daedalus to contain the monstrous Minotaur.',
-      'An intricate maze designed to confuse and challenge anyone who enters it.'
-    ]
-  },
-  {
-    word: 'eclipse',
-    stories: [
-      'An astronomical event that occurs when one celestial body moves into the shadow of another.',
-      'During this phenomenon, the day turns to twilight as the moon blocks out the sun.',
-      'A rare alignment of the sun, earth, and moon that casts a shadow across the planet.'
-    ]
-  },
-  {
-    word: 'compass',
-    stories: [
-      'An instrument containing a magnetized pointer which shows the direction of magnetic north.',
-      'It is a crucial tool for navigation, used alongside maps by hikers and sailors.',
-      'A pocket-sized device with a dial indicating North, South, East, and West.'
-    ]
-  },
-  {
-    word: 'blueprint',
-    stories: [
-      'A design plan or technical drawing mapping out an architectural or engineering project.',
-      'Engineers and builders study this detailed schematic before starting construction.',
-      'A detailed plan of action or drawing, historically printed as white lines on blue paper.'
-    ]
-  },
-  {
-    word: 'symphony',
-    stories: [
-      'An elaborate musical composition for a full orchestra, typically in four movements.',
-      'Beethoven and Mozart wrote famous examples of this complex orchestral work.',
-      'A grand, multi-instrument musical masterpiece performed by a large classical ensemble.'
-    ]
-  },
-  {
-    word: 'telescope',
-    stories: [
-      'An optical instrument designed to make distant objects appear nearer.',
-      'Astronomers use it to study stars, planets, nebula, and distant galaxies.',
-      'A device with lenses and mirrors used to look closely at the night sky.'
-    ]
-  },
-  {
-    word: 'velocity',
-    stories: [
-      'The speed of something in a given direction, defined as a vector quantity.',
-      'In physics, it describes both how fast an object is moving and where it is going.',
-      'The rate of change of an object\'s position with respect to time.'
-    ]
-  },
-  {
-    word: 'catalyst',
-    stories: [
-      'A substance that increases the rate of a chemical reaction without undergoing permanent change.',
-      'It lowers the activation energy required, speeding up biological or chemical processes.',
-      'An agent or substance that provokes or speeds up a reaction or change.'
-    ]
-  },
-  {
-    word: 'artifact',
-    stories: [
-      'An object made by a human being, typically of cultural or historical interest.',
-      'Archaeologists carefully excavate these ancient tools, pottery, and relics.',
-      'An item of historical importance discovered from a past civilization.'
-    ]
-  },
-  {
-    word: 'reflection',
-    stories: [
-      'The throwing back by a body or surface of light, heat, or sound without absorbing it.',
-      'You see a mirror image of yourself when looking at a still, calm surface of water.',
-      'An image or light cast back from a polished surface like a mirror.'
-    ]
-  }
+  { word: 'glacier', stories: ['Massive chunks of ice calve off the edges of this structure, crashing dramatically into the sea.', 'It contains the largest reservoir of fresh water on Earth and is highly sensitive to climate shifts.', 'A colossal, slow-moving river of ancient ice that carves valleys out of mountains over thousands of years.'] },
+  { word: 'gravity', stories: ['Einstein described it as a curvature of spacetime caused by mass and energy.', 'The strength of this force depends on the mass of the object; it is much stronger on Jupiter than on Mars.', 'The invisible pulling force that prevents us from floating away into space and holds the moon in its orbit.'] },
+  { word: 'fossil', stories: ['The preserved remains or impressions of prehistoric organisms embedded in rock.', 'Paleontologists dig deep into the earth to find these relics of ancient life.', 'A petrified bone, shell, or leaf imprint that tells the story of life millions of years ago.'] },
+  { word: 'silhouette', stories: ['The dark shape and outline of someone or something visible against a brighter background.', 'A shadow-like profile portrait, named after an 18th-century French finance minister.', 'A dark outline seen when a light shines from directly behind an object.'] },
+  { word: 'horizon', stories: ['The line at which the earth\'s surface and the sky appear to meet.', 'Sailors look toward this distant boundary to spot incoming ships or land.', 'The apparent line where the land or sea seems to touch the sky.'] },
+  { word: 'labyrinth', stories: ['A complicated irregular network of passages or paths in which it is difficult to find one\'s way.', 'In Greek mythology, it was built by Daedalus to contain the monstrous Minotaur.', 'An intricate maze designed to confuse and challenge anyone who enters it.'] },
+  { word: 'eclipse', stories: ['An astronomical event that occurs when one celestial body moves into the shadow of another.', 'During this phenomenon, the day turns to twilight as the moon blocks out the sun.', 'A rare alignment of the sun, earth, and moon that casts a shadow across the planet.'] },
+  { word: 'compass', stories: ['An instrument containing a magnetized pointer which shows the direction of magnetic north.', 'It is a crucial tool for navigation, used alongside maps by hikers and sailors.', 'A pocket-sized device with a dial indicating North, South, East, and West.'] },
+  { word: 'blueprint', stories: ['A design plan or technical drawing mapping out an architectural or engineering project.', 'Engineers and builders study this detailed schematic before starting construction.', 'A detailed plan of action or drawing, historically printed as white lines on blue paper.'] },
+  { word: 'symphony', stories: ['An elaborate musical composition for a full orchestra, typically in four movements.', 'Beethoven and Mozart wrote famous examples of this complex orchestral work.', 'A grand, multi-instrument musical masterpiece performed by a large classical ensemble.'] },
+  { word: 'telescope', stories: ['An optical instrument designed to make distant objects appear nearer.', 'Astronomers use it to study stars, planets, nebula, and distant galaxies.', 'A device with lenses and mirrors used to look closely at the night sky.'] },
+  { word: 'velocity', stories: ['The speed of something in a given direction, defined as a vector quantity.', 'In physics, it describes both how fast an object is moving and where it is going.', 'The rate of change of an object\'s position with respect to time.'] },
+  { word: 'catalyst', stories: ['A substance that increases the rate of a chemical reaction without undergoing permanent change.', 'It lowers the activation energy required, speeding up biological or chemical processes.', 'An agent or substance that provokes or speeds up a reaction or change.'] },
+  { word: 'artifact', stories: ['An object made by a human being, typically of cultural or historical interest.', 'Archaeologists carefully excavate these ancient tools, pottery, and relics.', 'An item of historical importance discovered from a past civilization.'] },
+  { word: 'reflection', stories: ['The throwing back by a body or surface of light, heat, or sound without absorbing it.', 'You see a mirror image of yourself when looking at a still, calm surface of water.', 'An image or light cast back from a polished surface like a mirror.'] },
+  { word: 'momentum', stories: ['The quantity of motion of a moving body, measured as a product of its mass and velocity.', 'In physics, it is conserved in collisions unless an external force acts.', 'The impetus gained by a moving object that keeps it going.'] },
+  { word: 'friction', stories: ['The resistance that one surface or object encounters when moving over another.', 'It converts kinetic energy into heat and can be reduced with lubricants.', 'The force that opposes motion between two surfaces in contact.'] },
+  { word: 'osmosis', stories: ['The process by which molecules of a solvent pass through a semipermeable membrane.', 'It is how plant roots absorb water from the soil.', 'The gradual passing of a liquid through a membrane from a less concentrated to a more concentrated solution.'] },
+  { word: 'photosynthesis', stories: ['The process by which green plants use sunlight to synthesize foods from carbon dioxide and water.', 'It produces oxygen as a byproduct and is the foundation of most life on Earth.', 'The way plants convert light energy into chemical energy.'] },
+  { word: 'evolution', stories: ['The process by which different kinds of living organisms develop and diversify over time.', 'Charles Darwin proposed the theory of natural selection to explain it.', 'The gradual change in species over generations through adaptation.'] },
+  { word: 'ecosystem', stories: ['A biological community of interacting organisms and their physical environment.', 'It can be as small as a pond or as large as a rainforest.', 'A complex network of living things and their habitat.'] },
+  { word: 'habitat', stories: ['The natural home or environment of an animal, plant, or other organism.', 'It provides food, water, shelter, and space for survival.', 'The specific place where a species lives and thrives.'] },
+  { word: 'climate', stories: ['The weather conditions prevailing in an area in general or over a long period.', 'It is influenced by latitude, altitude, and ocean currents.', 'The long-term pattern of temperature and precipitation in a region.'] },
+  { word: 'atmosphere', stories: ['The envelope of gases surrounding the earth or another planet.', 'It protects us from harmful solar radiation and helps regulate temperature.', 'The layer of air that makes life on Earth possible.'] },
+  { word: 'ecosystem', stories: ['A biological community of interacting organisms and their physical environment.', 'It can be as small as a pond or as large as a rainforest.', 'A complex network of living things and their habitat.'] },
+  { word: 'biodiversity', stories: ['The variety of plant and animal life in the world or in a particular habitat.', 'It is essential for ecosystem stability and human survival.', 'The rich tapestry of life on Earth, from genes to ecosystems.'] },
+  { word: 'sustainability', stories: ['The ability to be maintained at a certain rate or level without depleting resources.', 'It involves meeting present needs without compromising future generations.', 'A practice of using resources responsibly so they last.'] },
+  { word: 'conservation', stories: ['The protection of animals, plants, and natural resources.', 'It involves setting aside protected areas and reducing pollution.', 'The act of preserving the natural world for future generations.'] },
+  { word: 'pollution', stories: ['The introduction of harmful substances or products into the environment.', 'It can affect air, water, and soil and harm living organisms.', 'The contamination of the natural world by human activities.'] },
+  { word: 'recycling', stories: ['The process of converting waste materials into new materials and objects.', 'It reduces the need for raw materials and saves energy.', 'The act of collecting and reprocessing used items like paper, plastic, and glass.'] },
+  { word: 'renewable', stories: ['A resource that can be replenished naturally over time.', 'Examples include solar, wind, and hydroelectric power.', 'An energy source that is not depleted when used.'] },
+  { word: 'carbon', stories: ['A chemical element that is the basis of all known life on Earth.', 'It is found in diamonds, graphite, and all living organisms.', 'The element that forms the backbone of organic molecules.'] },
+  { word: 'oxygen', stories: ['A chemical element that is essential for respiration in most living things.', 'It makes up about 21% of the Earth\'s atmosphere.', 'The gas we breathe in to survive.'] },
+  { word: 'hydrogen', stories: ['The lightest and most abundant element in the universe.', 'It is a key component of water and stars.', 'The element with atomic number one.'] },
+  { word: 'nitrogen', stories: ['A chemical element that makes up about 78% of the Earth\'s atmosphere.', 'It is essential for plant growth and is found in fertilizers.', 'The gas that is the most abundant in the air we breathe.'] },
+  { word: 'molecule', stories: ['A group of atoms bonded together, representing the smallest fundamental unit of a chemical compound.', 'It can be as simple as two atoms or as complex as a protein.', 'The smallest particle of a substance that retains its properties.'] },
+  { word: 'atom', stories: ['The basic unit of a chemical element, consisting of a nucleus and electrons.', 'It is the smallest unit of ordinary matter that has the properties of a chemical element.', 'The building block of all matter in the universe.'] },
+  { word: 'electron', stories: ['A stable subatomic particle with a negative charge.', 'It orbits the nucleus of an atom in energy levels.', 'The negatively charged particle found in all atoms.'] },
+  { word: 'proton', stories: ['A stable subatomic particle with a positive charge.', 'It is found in the nucleus of every atom.', 'The positively charged particle that defines the atomic number.'] },
+  { word: 'neutron', stories: ['A subatomic particle with no electric charge.', 'It is found in the nucleus of atoms along with protons.', 'The neutral particle that adds mass to an atom.'] },
+  { word: 'nucleus', stories: ['The central and most important part of an object, movement, or group.', 'In biology, it is the organelle that contains the cell\'s genetic material.', 'The control center of a cell or the core of an atom.'] },
+  { word: 'cell', stories: ['The smallest structural and functional unit of an organism.', 'It contains a nucleus, cytoplasm, and organelles.', 'The basic building block of all living things.'] },
+  { word: 'gene', stories: ['A unit of heredity that is transferred from parent to offspring.', 'It is made of DNA and determines traits like eye color.', 'A segment of DNA that codes for a specific protein.'] },
+  { word: 'chromosome', stories: ['A thread-like structure of nucleic acids and protein found in the nucleus.', 'It carries genetic information in the form of genes.', 'Humans have 23 pairs of these structures.'] },
+  { word: 'protein', stories: ['A large molecule made up of amino acids.', 'It is essential for the structure and function of all living cells.', 'The building block of muscles, enzymes, and hormones.'] },
+  { word: 'enzyme', stories: ['A substance produced by a living organism that acts as a catalyst.', 'It speeds up chemical reactions in the body without being consumed.', 'A biological molecule that helps break down food or build new compounds.'] },
+  { word: 'hormone', stories: ['A chemical substance produced by an endocrine gland and carried in the blood.', 'It regulates growth, metabolism, and reproduction.', 'A signaling molecule that tells the body what to do.'] },
+  { word: 'neuron', stories: ['A specialized cell that transmits nerve impulses.', 'It has a cell body, dendrites, and an axon.', 'The building block of the nervous system.'] },
+  { word: 'brain', stories: ['The organ that controls thought, memory, emotion, and movement.', 'It is the most complex organ in the human body.', 'The command center of the nervous system.'] },
+  { word: 'heart', stories: ['A muscular organ that pumps blood through the circulatory system.', 'It beats about 100,000 times a day.', 'The organ that keeps oxygen and nutrients flowing to your body.'] },
+  { word: 'lung', stories: ['The organ that allows you to breathe and exchange oxygen.', 'It has millions of tiny air sacs called alveoli.', 'The organ that takes in oxygen and expels carbon dioxide.'] },
+  { word: 'liver', stories: ['A large organ that detoxifies chemicals and metabolizes drugs.', 'It produces bile for digestion and stores vitamins.', 'The organ that filters blood and helps digest food.'] },
+  { word: 'kidney', stories: ['The organ that filters blood and produces urine.', 'It regulates electrolyte balance and blood pressure.', 'The bean-shaped organ that cleans your blood.'] },
+  { word: 'stomach', stories: ['The organ that digests food using acids and enzymes.', 'It churns food into a semi-liquid paste called chyme.', 'The muscular sac that breaks down what you eat.'] },
+  { word: 'intestine', stories: ['The long, tube-like organ that completes digestion.', 'It absorbs nutrients and water from food.', 'The part of the digestive system after the stomach.'] },
+  { word: 'muscle', stories: ['A band or bundle of fibrous tissue that produces movement.', 'It can be voluntary or involuntary.', 'The tissue that contracts to move your body.'] },
+  { word: 'bone', stories: ['A rigid organ that forms part of the skeleton.', 'It produces blood cells and stores minerals.', 'The hard tissue that supports the body.'] },
+  { word: 'blood', stories: ['The red liquid that circulates in the arteries and veins.', 'It carries oxygen, nutrients, and waste products.', 'The fluid that transports essential substances throughout the body.'] },
+  { word: 'skin', stories: ['The outer covering of the body, the largest organ.', 'It protects against pathogens and regulates temperature.', 'The body\'s first line of defense against the outside world.'] },
+  { word: 'eye', stories: ['The organ of vision that detects light and sends signals to the brain.', 'It has a lens, retina, and iris.', 'The organ that lets you see the world.'] },
+  { word: 'ear', stories: ['The organ of hearing and balance.', 'It has three parts: outer, middle, and inner.', 'The organ that detects sound waves.'] },
+  { word: 'nose', stories: ['The organ of smell and part of the respiratory system.', 'It filters and warms air before it reaches the lungs.', 'The part of the face that detects odors.'] },
+  { word: 'tongue', stories: ['The muscular organ in the mouth used for tasting and speaking.', 'It has taste buds that detect sweet, sour, salty, and bitter.', 'The organ that helps you chew and swallow.'] },
+  { word: 'tooth', stories: ['A hard, calcified structure found in the mouths of many animals.', 'It is used for biting, chewing, and tearing food.', 'The white structure in your mouth that you brush daily.'] },
+  { word: 'hair', stories: ['A protein filament that grows from follicles in the skin.', 'It can be styled, cut, and colored.', 'The strands that cover your head and body.'] },
+  { word: 'nail', stories: ['A hard, protective covering on the tips of fingers and toes.', 'It is made of keratin and grows continuously.', 'The part of your finger you trim and paint.'] },
+  { word: 'fingernail', stories: ['The hard covering on the upper surface of the tip of a finger.', 'It protects the fingertip and enhances sensation.', 'The part of you that you file and polish.'] },
+  { word: 'appendix', stories: ['A small, tube-like structure attached to the large intestine.', 'It is considered a vestigial organ with no known function.', 'The organ that can become inflamed and require removal.'] },
+  { word: 'skeleton', stories: ['The internal framework of bones in a human or animal body.', 'It supports the body, protects organs, and enables movement.', 'The bony structure that gives your body its shape.'] },
+  { word: 'joint', stories: ['The point at which two or more bones are connected.', 'It allows movement and flexibility.', 'The knee, elbow, and shoulder are examples.'] },
+  { word: 'tendon', stories: ['A flexible but inelastic cord of strong fibrous tissue.', 'It attaches muscle to bone.', 'The tissue that transmits force from muscle to bone.'] },
+  { word: 'ligament', stories: ['A short band of tough, flexible fibrous connective tissue.', 'It connects bones to other bones at a joint.', 'The tissue that stabilizes joints.'] },
+  { word: 'cartilage', stories: ['A firm, whitish, flexible connective tissue.', 'It is found in joints, the rib cage, and the ear.', 'The tissue that cushions bones and reduces friction.'] },
+  { word: 'vertebra', stories: ['Each of the series of small bones forming the backbone.', 'It protects the spinal cord and supports the body.', 'The individual bones of the spine.'] },
+  { word: 'spinal cord', stories: ['The cylindrical bundle of nerve fibers and associated tissue.', 'It is enclosed in the spine and connects the brain to the body.', 'The main pathway for messages between the brain and body.'] },
+  { word: 'nerve', stories: ['A whitish fiber or bundle of fibers that transmits impulses.', 'It carries sensory and motor information.', 'The structure that carries signals throughout the body.'] },
+  { word: 'reflex', stories: ['An action that is performed as a response to a stimulus without conscious thought.', 'It is mediated by the spinal cord.', 'An involuntary, nearly instantaneous movement.'] },
+  { word: 'instinct', stories: ['An innate, typically fixed pattern of behavior in animals.', 'It is not learned and is present from birth.', 'A natural or intuitive way of acting.'] },
+  { word: 'memory', stories: ['The faculty by which the mind stores and remembers information.', 'It can be short-term or long-term.', 'The ability to recall past experiences.'] },
+  { word: 'emotion', stories: ['A natural instinctive state of mind deriving from one\'s circumstances.', 'It includes joy, sadness, anger, and fear.', 'A strong feeling that arises from the mind.'] },
+  { word: 'consciousness', stories: ['The state of being awake and aware of one\'s surroundings.', 'It is the subjective experience of the mind.', 'The awareness of the self and the world.'] },
+  { word: 'dream', stories: ['A series of thoughts, images, and sensations occurring in a person\'s mind during sleep.', 'It can be vivid, bizarre, or meaningful.', 'The movie playing in your head while you sleep.'] },
+  { word: 'sleep', stories: ['A natural periodic state of rest for the mind and body.', 'It is essential for health and memory consolidation.', 'The state of unconsciousness from which you can be awakened.'] },
+  { word: 'hypnosis', stories: ['The induction of a state of consciousness in which a person is highly responsive to suggestion.', 'It is used in therapy to treat anxiety and pain.', 'A trance-like state of focused attention.'] },
+  { word: 'meditation', stories: ['The practice of focusing the mind to achieve calmness and clarity.', 'It can reduce stress and improve well-being.', 'A technique for training attention and awareness.'] },
+  { word: 'yoga', stories: ['A Hindu spiritual and ascetic discipline involving breath control and simple postures.', 'It is widely practiced for health and relaxation.', 'A system of exercises for physical and mental well-being.'] },
+  { word: 'nutrition', stories: ['The process of providing or obtaining the food necessary for health and growth.', 'It involves carbohydrates, proteins, fats, vitamins, and minerals.', 'The science of how food nourishes the body.'] },
+  { word: 'vitamin', stories: ['An organic compound essential for normal growth and nutrition.', 'It is required in small quantities in the diet.', 'A nutrient that the body cannot synthesize and must obtain from food.'] },
+  { word: 'mineral', stories: ['A solid inorganic substance of natural occurrence.', 'It is essential for various bodily functions.', 'A nutrient like calcium, iron, or zinc.'] },
+  { word: 'carbohydrate', stories: ['A biomolecule consisting of carbon, hydrogen, and oxygen atoms.', 'It is a major source of energy for the body.', 'A nutrient found in bread, pasta, and rice.'] },
+  { word: 'protein', stories: ['A large molecule made up of amino acids.', 'It is essential for the structure and function of all living cells.', 'The building block of muscles, enzymes, and hormones.'] },
+  { word: 'fat', stories: ['A natural oily or greasy substance occurring in animal bodies.', 'It is a source of energy and helps absorb vitamins.', 'A nutrient found in butter, oil, and nuts.'] },
+  { word: 'fiber', stories: ['A thread or filament from which a vegetable tissue, mineral, or textile is formed.', 'It aids digestion and prevents constipation.', 'A nutrient found in fruits, vegetables, and whole grains.'] },
+  { word: 'water', stories: ['A clear, tasteless liquid essential for all known forms of life.', 'It covers most of the Earth and falls from the sky as rain.', 'You drink it to stay hydrated, especially after exercise.'] },
+  { word: 'calorie', stories: ['A unit of energy used to measure the energy value of food.', 'It is the amount of heat needed to raise the temperature of one gram of water by one degree Celsius.', 'A measure of the energy you get from what you eat.'] },
+  { word: 'metabolism', stories: ['The chemical processes that occur within a living organism to maintain life.', 'It includes catabolism and anabolism.', 'The rate at which your body converts food into energy.'] },
+  { word: 'digestion', stories: ['The process of breaking down food into substances that can be absorbed.', 'It begins in the mouth and continues in the stomach and intestines.', 'The process by which your body extracts nutrients from food.'] },
+  { word: 'respiration', stories: ['The process of breathing and exchanging oxygen and carbon dioxide.', 'It occurs in the lungs and at the cellular level.', 'The process by which living things take in oxygen and release carbon dioxide.'] },
+  { word: 'circulation', stories: ['The movement of blood through the heart and blood vessels.', 'It delivers oxygen and nutrients to tissues.', 'The continuous flow of blood throughout the body.'] },
+  { word: 'immunity', stories: ['The ability of an organism to resist a particular infection or toxin.', 'It can be innate or acquired.', 'The body\'s defense against disease.'] },
+  { word: 'vaccine', stories: ['A substance used to stimulate the production of antibodies.', 'It provides immunity against one or several diseases.', 'A shot that protects you from getting sick.'] },
+  { word: 'antibiotic', stories: ['A medicine that inhibits the growth of or destroys microorganisms.', 'It is used to treat bacterial infections.', 'A drug that kills bacteria in your body.'] },
+  { word: 'virus', stories: ['A tiny infectious agent that replicates only inside living cells.', 'It can cause diseases like the flu and common cold.', 'A microscopic particle that can make you sick.'] },
+  { word: 'bacteria', stories: ['A member of a large group of unicellular microorganisms.', 'Some are harmful, but many are beneficial.', 'Tiny living organisms that can cause infection or help digestion.'] },
+  { word: 'fungus', stories: ['Any of a group of spore-producing organisms feeding on organic matter.', 'It includes mushrooms, molds, and yeasts.', 'An organism like a mushroom that grows in damp places.'] },
+  { word: 'parasite', stories: ['An organism that lives in or on another organism and benefits at the host\'s expense.', 'It can cause diseases like malaria.', 'A creature that survives by feeding off another.'] },
+  { word: 'genetics', stories: ['The study of heredity and the variation of inherited characteristics.', 'It explains how traits are passed from parents to offspring.', 'The science of genes and DNA.'] },
+  { word: 'DNA', stories: ['The molecule that carries genetic instructions for the development and functioning of living things.', 'It has a double helix structure.', 'The blueprint of life found in every cell.'] },
+  { word: 'RNA', stories: ['A nucleic acid present in all living cells that plays a role in protein synthesis.', 'It is single-stranded and contains ribose sugar.', 'The molecule that helps carry out the instructions in DNA.'] },
+  { word: 'mutation', stories: ['A change in the DNA sequence of a gene.', 'It can be harmful, beneficial, or neutral.', 'A random alteration in the genetic code.'] },
+  { word: 'evolution', stories: ['The process by which different kinds of living organisms develop and diversify over time.', 'Charles Darwin proposed the theory of natural selection to explain it.', 'The gradual change in species over generations through adaptation.'] },
+  { word: 'species', stories: ['A group of living organisms consisting of similar individuals capable of exchanging genes.', 'It is the basic unit of biological classification.', 'A distinct kind of plant or animal.'] },
+  { word: 'ecosystem', stories: ['A biological community of interacting organisms and their physical environment.', 'It can be as small as a pond or as large as a rainforest.', 'A complex network of living things and their habitat.'] },
+  { word: 'habitat', stories: ['The natural home or environment of an animal, plant, or other organism.', 'It provides food, water, shelter, and space for survival.', 'The specific place where a species lives and thrives.'] },
+  { word: 'climate', stories: ['The weather conditions prevailing in an area in general or over a long period.', 'It is influenced by latitude, altitude, and ocean currents.', 'The long-term pattern of temperature and precipitation in a region.'] },
+  { word: 'atmosphere', stories: ['The envelope of gases surrounding the earth or another planet.', 'It protects us from harmful solar radiation and helps regulate temperature.', 'The layer of air that makes life on Earth possible.'] },
+  { word: 'biodiversity', stories: ['The variety of plant and animal life in the world or in a particular habitat.', 'It is essential for ecosystem stability and human survival.', 'The rich tapestry of life on Earth, from genes to ecosystems.'] },
+  { word: 'sustainability', stories: ['The ability to be maintained at a certain rate or level without depleting resources.', 'It involves meeting present needs without compromising future generations.', 'A practice of using resources responsibly so they last.'] },
+  { word: 'conservation', stories: ['The protection of animals, plants, and natural resources.', 'It involves setting aside protected areas and reducing pollution.', 'The act of preserving the natural world for future generations.'] },
+  { word: 'pollution', stories: ['The introduction of harmful substances or products into the environment.', 'It can affect air, water, and soil and harm living organisms.', 'The contamination of the natural world by human activities.'] },
+  { word: 'recycling', stories: ['The process of converting waste materials into new materials and objects.', 'It reduces the need for raw materials and saves energy.', 'The act of collecting and reprocessing used items like paper, plastic, and glass.'] },
+  { word: 'renewable', stories: ['A resource that can be replenished naturally over time.', 'Examples include solar, wind, and hydroelectric power.', 'An energy source that is not depleted when used.'] },
+  { word: 'carbon', stories: ['A chemical element that is the basis of all known life on Earth.', 'It is found in diamonds, graphite, and all living organisms.', 'The element that forms the backbone of organic molecules.'] },
+  { word: 'oxygen', stories: ['A chemical element that is essential for respiration in most living things.', 'It makes up about 21% of the Earth\'s atmosphere.', 'The gas we breathe in to survive.'] },
+  { word: 'hydrogen', stories: ['The lightest and most abundant element in the universe.', 'It is a key component of water and stars.', 'The element with atomic number one.'] },
+  { word: 'nitrogen', stories: ['A chemical element that makes up about 78% of the Earth\'s atmosphere.', 'It is essential for plant growth and is found in fertilizers.', 'The gas that is the most abundant in the air we breathe.'] },
+  { word: 'molecule', stories: ['A group of atoms bonded together, representing the smallest fundamental unit of a chemical compound.', 'It can be as simple as two atoms or as complex as a protein.', 'The smallest particle of a substance that retains its properties.'] },
+  { word: 'atom', stories: ['The basic unit of a chemical element, consisting of a nucleus and electrons.', 'It is the smallest unit of ordinary matter that has the properties of a chemical element.', 'The building block of all matter in the universe.'] },
+  { word: 'electron', stories: ['A stable subatomic particle with a negative charge.', 'It orbits the nucleus of an atom in energy levels.', 'The negatively charged particle found in all atoms.'] },
+  { word: 'proton', stories: ['A stable subatomic particle with a positive charge.', 'It is found in the nucleus of every atom.', 'The positively charged particle that defines the atomic number.'] },
+  { word: 'neutron', stories: ['A subatomic particle with no electric charge.', 'It is found in the nucleus of atoms along with protons.', 'The neutral particle that adds mass to an atom.'] },
+  { word: 'nucleus', stories: ['The central and most important part of an object, movement, or group.', 'In biology, it is the organelle that contains the cell\'s genetic material.', 'The control center of a cell or the core of an atom.'] },
+  { word: 'cell', stories: ['The smallest structural and functional unit of an organism.', 'It contains a nucleus, cytoplasm, and organelles.', 'The basic building block of all living things.'] },
+  { word: 'gene', stories: ['A unit of heredity that is transferred from parent to offspring.', 'It is made of DNA and determines traits like eye color.', 'A segment of DNA that codes for a specific protein.'] },
+  { word: 'chromosome', stories: ['A thread-like structure of nucleic acids and protein found in the nucleus.', 'It carries genetic information in the form of genes.', 'Humans have 23 pairs of these structures.'] },
+  { word: 'protein', stories: ['A large molecule made up of amino acids.', 'It is essential for the structure and function of all living cells.', 'The building block of muscles, enzymes, and hormones.'] },
+  { word: 'enzyme', stories: ['A substance produced by a living organism that acts as a catalyst.', 'It speeds up chemical reactions in the body without being consumed.', 'A biological molecule that helps break down food or build new compounds.'] },
+  { word: 'hormone', stories: ['A chemical substance produced by an endocrine gland and carried in the blood.', 'It regulates growth, metabolism, and reproduction.', 'A signaling molecule that tells the body what to do.'] },
+  { word: 'neuron', stories: ['A specialized cell that transmits nerve impulses.', 'It has a cell body, dendrites, and an axon.', 'The building block of the nervous system.'] },
+  { word: 'brain', stories: ['The organ that controls thought, memory, emotion, and movement.', 'It is the most complex organ in the human body.', 'The command center of the nervous system.'] },
+  { word: 'heart', stories: ['A muscular organ that pumps blood through the circulatory system.', 'It beats about 100,000 times a day.', 'The organ that keeps oxygen and nutrients flowing to your body.'] },
+  { word: 'lung', stories: ['The organ that allows you to breathe and exchange oxygen.', 'It has millions of tiny air sacs called alveoli.', 'The organ that takes in oxygen and expels carbon dioxide.'] },
+  { word: 'liver', stories: ['A large organ that detoxifies chemicals and metabolizes drugs.', 'It produces bile for digestion and stores vitamins.', 'The organ that filters blood and helps digest food.'] },
+  { word: 'kidney', stories: ['The organ that filters blood and produces urine.', 'It regulates electrolyte balance and blood pressure.', 'The bean-shaped organ that cleans your blood.'] },
+  { word: 'stomach', stories: ['The organ that digests food using acids and enzymes.', 'It churns food into a semi-liquid paste called chyme.', 'The muscular sac that breaks down what you eat.'] },
+  { word: 'intestine', stories: ['The long, tube-like organ that completes digestion.', 'It absorbs nutrients and water from food.', 'The part of the digestive system after the stomach.'] },
+  { word: 'muscle', stories: ['A band or bundle of fibrous tissue that produces movement.', 'It can be voluntary or involuntary.', 'The tissue that contracts to move your body.'] },
+  { word: 'bone', stories: ['A rigid organ that forms part of the skeleton.', 'It produces blood cells and stores minerals.', 'The hard tissue that supports the body.'] },
+  { word: 'blood', stories: ['The red liquid that circulates in the arteries and veins.', 'It carries oxygen, nutrients, and waste products.', 'The fluid that transports essential substances throughout the body.'] },
+  { word: 'skin', stories: ['The outer covering of the body, the largest organ.', 'It protects against pathogens and regulates temperature.', 'The body\'s first line of defense against the outside world.'] },
+  { word: 'eye', stories: ['The organ of vision that detects light and sends signals to the brain.', 'It has a lens, retina, and iris.', 'The organ that lets you see the world.'] },
+  { word: 'ear', stories: ['The organ of hearing and balance.', 'It has three parts: outer, middle, and inner.', 'The organ that detects sound waves.'] },
+  { word: 'nose', stories: ['The organ of smell and part of the respiratory system.', 'It filters and warms air before it reaches the lungs.', 'The part of the face that detects odors.'] },
+  { word: 'tongue', stories: ['The muscular organ in the mouth used for tasting and speaking.', 'It has taste buds that detect sweet, sour, salty, and bitter.', 'The organ that helps you chew and swallow.'] },
+  { word: 'tooth', stories: ['A hard, calcified structure found in the mouths of many animals.', 'It is used for biting, chewing, and tearing food.', 'The white structure in your mouth that you brush daily.'] },
+  { word: 'hair', stories: ['A protein filament that grows from follicles in the skin.', 'It can be styled, cut, and colored.', 'The strands that cover your head and body.'] },
+  { word: 'nail', stories: ['A hard, protective covering on the tips of fingers and toes.', 'It is made of keratin and grows continuously.', 'The part of your finger you trim and paint.'] }
 ];
 
+
 export const HARD_PAIRS: FallbackPair[] = [
-  { 
-    word: 'paradox', 
-    stories: [
-      'A puzzle of reasoning where premises that seem true lead to a self-contradictory conclusion.',
-      'The grandfather version describes the logical impossibility of going back in time to change history.',
-      'A statement that contradicts itself, yet holds a deeper truth that makes logical sense upon examination.'
-    ] 
-  },
-  {
-    word: 'nostalgia',
-    stories: [
-      'A sentimental longing or wistful affection for the past, typically for a period with happy personal associations.',
-      'It was originally defined as a medical disease, a form of homesickness suffered by Swiss mercenaries.',
-      'A bittersweet feeling of longing for past times, memories, or places from childhood.'
-    ]
-  },
-  {
-    word: 'equilibrium',
-    stories: [
-      'A state in which opposing forces or influences are balanced.',
-      'In chemistry, it is the state where the forward and reverse reaction rates are equal.',
-      'A stable condition of physical or chemical balance where no change occurs over time.'
-    ]
-  },
-  {
-    word: 'serendipity',
-    stories: [
-      'The occurrence and development of events by chance in a happy or beneficial way.',
-      'The word was coined by Horace Walpole, inspired by a fairy tale about three princes of a faraway land.',
-      'A fortunate accident or pleasant surprise found when you were not actively looking for it.'
-    ]
-  },
-  {
-    word: 'harmony',
-    stories: [
-      'The combination of simultaneously sounded musical notes to produce chords.',
-      'A state of peaceful agreement, cooperation, and unity among people or elements.',
-      'The pleasing arrangement of parts or sounds to create a unified, beautiful experience.'
-    ]
-  },
-  {
-    word: 'anomaly',
-    stories: [
-      'Something that deviates from what is standard, normal, or expected.',
-      'Scientists investigate this unexpected data point that does not fit the established pattern.',
-      'An unusual, irregular occurrence or deviation from the normal rules.'
-    ]
-  },
-  {
-    word: 'infinity',
-    stories: [
-      'The state or quality of being limitless or endless in space, extent, or size.',
-      'In mathematics, it represents a concept larger than any natural number or quantity.',
-      'A boundless, endless progression that goes on forever without limit.'
-    ]
-  },
-  {
-    word: 'theory',
-    stories: [
-      'A system of ideas intended to explain something, especially one based on general principles.',
-      'Unlike a hypothesis, this is a well-substantiated explanation supported by vast evidence.',
-      'A structured set of rules or principles explaining observed facts or phenomena.'
-    ]
-  },
-  {
-    word: 'enigma',
-    stories: [
-      'A person or thing that is mysterious, puzzling, or difficult to understand.',
-      'Historically, it was the name of a famous cipher machine used to encrypt secret military messages.',
-      'A baffling riddle or mysterious puzzle that defies easy explanation.'
-    ]
-  },
-  {
-    word: 'metaphor',
-    stories: [
-      'A figure of speech in which a word or phrase is applied to an object or action to which it is not literally applicable.',
-      'It asserts that one thing is another thing to draw a vivid comparison without using "like" or "as".',
-      'A symbolic comparison used in literature to explain one idea in terms of another.'
-    ]
-  },
-  {
-    word: 'dimension',
-    stories: [
-      'A measurable extent of some kind, such as length, breadth, depth, or height.',
-      'Physicists describe our reality as having three spatial axes and one temporal axis.',
-      'A direction of measurement or an alternate realm of existence.'
-    ]
-  },
-  {
-    word: 'legacy',
-    stories: [
-      'An amount of money or property left to someone in a will, or a long-lasting impact.',
-      'It represents the footprint or history a person leaves behind for future generations.',
-      'Something handed down from an ancestor or predecessor to those who follow.'
-    ]
-  },
-  {
-    word: 'illusion',
-    stories: [
-      'A thing that is or is likely to be wrongly perceived or interpreted by the senses.',
-      'A magic trick or mirage in the desert that makes you see something that is not truly there.',
-      'A deceptive appearance or false impression of reality.'
-    ]
-  },
-  {
-    word: 'symmetry',
-    stories: [
-      'The quality of being made up of exactly similar parts facing each other or around an axis.',
-      'A butterfly\'s wings or a snowflake demonstrate this perfect, balanced proportion.',
-      'A balanced, mirrored arrangement of matching parts on opposite sides of a divider.'
-    ]
-  },
-  {
-    word: 'sanctuary',
-    stories: [
-      'A place of safety or refuge, historically a holy place like a temple or church.',
-      'Wildlife reserves serve as this protective haven for endangered animals.',
-      'A peaceful, safe haven where one can find shelter from danger or stress.'
-    ]
-  }
+  { word: 'paradox', stories: ['A puzzle of reasoning where premises that seem true lead to a self-contradictory conclusion.', 'The grandfather version describes the logical impossibility of going back in time to change history.', 'A statement that contradicts itself, yet holds a deeper truth that makes logical sense upon examination.'] },
+  { word: 'nostalgia', stories: ['A sentimental longing or wistful affection for the past, typically for a period with happy personal associations.', 'It was originally defined as a medical disease, a form of homesickness suffered by Swiss mercenaries.', 'A bittersweet feeling of longing for past times, memories, or places from childhood.'] },
+  { word: 'equilibrium', stories: ['A state in which opposing forces or influences are balanced.', 'In chemistry, it is the state where the forward and reverse reaction rates are equal.', 'A stable condition of physical or chemical balance where no change occurs over time.'] },
+  { word: 'serendipity', stories: ['The occurrence and development of events by chance in a happy or beneficial way.', 'The word was coined by Horace Walpole, inspired by a fairy tale about three princes of a faraway land.', 'A fortunate accident or pleasant surprise found when you were not actively looking for it.'] },
+  { word: 'harmony', stories: ['The combination of simultaneously sounded musical notes to produce chords.', 'A state of peaceful agreement, cooperation, and unity among people or elements.', 'The pleasing arrangement of parts or sounds to create a unified, beautiful experience.'] },
+  { word: 'anomaly', stories: ['Something that deviates from what is standard, normal, or expected.', 'Scientists investigate this unexpected data point that does not fit the established pattern.', 'An unusual, irregular occurrence or deviation from the normal rules.'] },
+  { word: 'infinity', stories: ['The state or quality of being limitless or endless in space, extent, or size.', 'In mathematics, it represents a concept larger than any natural number or quantity.', 'A boundless, endless progression that goes on forever without limit.'] },
+  { word: 'theory', stories: ['A system of ideas intended to explain something, especially one based on general principles.', 'Unlike a hypothesis, this is a well-substantiated explanation supported by vast evidence.', 'A structured set of rules or principles explaining observed facts or phenomena.'] },
+  { word: 'enigma', stories: ['A person or thing that is mysterious, puzzling, or difficult to understand.', 'Historically, it was the name of a famous cipher machine used to encrypt secret military messages.', 'A baffling riddle or mysterious puzzle that defies easy explanation.'] },
+  { word: 'metaphor', stories: ['A figure of speech in which a word or phrase is applied to an object or action to which it is not literally applicable.', 'It asserts that one thing is another thing to draw a vivid comparison without using "like" or "as".', 'A symbolic comparison used in literature to explain one idea in terms of another.'] },
+  { word: 'dimension', stories: ['A measurable extent of some kind, such as length, breadth, depth, or height.', 'Physicists describe our reality as having three spatial axes and one temporal axis.', 'A direction of measurement or an alternate realm of existence.'] },
+  { word: 'legacy', stories: ['An amount of money or property left to someone in a will, or a long-lasting impact.', 'It represents the footprint or history a person leaves behind for future generations.', 'Something handed down from an ancestor or predecessor to those who follow.'] },
+  { word: 'illusion', stories: ['A thing that is or is likely to be wrongly perceived or interpreted by the senses.', 'A magic trick or mirage in the desert that makes you see something that is not truly there.', 'A deceptive appearance or false impression of reality.'] },
+  { word: 'symmetry', stories: ['The quality of being made up of exactly similar parts facing each other or around an axis.', 'A butterfly\'s wings or a snowflake demonstrate this perfect, balanced proportion.', 'A balanced, mirrored arrangement of matching parts on opposite sides of a divider.'] },
+  { word: 'sanctuary', stories: ['A place of safety or refuge, historically a holy place like a temple or church.', 'Wildlife reserves serve as this protective haven for endangered animals.', 'A peaceful, safe haven where one can find shelter from danger or stress.'] },
+  { word: 'conscience', stories: ['An inner feeling or voice viewed as acting as a guide to the rightness or wrongness of one\'s behavior.', 'It is often described as the moral compass of the mind.', 'The sense of right and wrong that guides your actions.'] },
+  { word: 'subconscious', stories: ['The part of the mind of which one is not fully aware but which influences one\'s actions and feelings.', 'It stores memories and desires that are not currently in conscious awareness.', 'The hidden layer of the mind that affects behavior without you realizing it.'] },
+  { word: 'intuition', stories: ['The ability to understand something immediately, without the need for conscious reasoning.', 'It is often described as a gut feeling or instinct.', 'A knowing that comes from within without logical analysis.'] },
+  { word: 'empathy', stories: ['The ability to understand and share the feelings of another.', 'It involves putting yourself in someone else\'s shoes.', 'The capacity to feel what another person is experiencing.'] },
+  { word: 'apathy', stories: ['A lack of interest, enthusiasm, or concern.', 'It is the opposite of empathy and engagement.', 'A state of indifference or emotional numbness.'] },
+  { word: 'resilience', stories: ['The capacity to recover quickly from difficulties.', 'It is the ability to bounce back from adversity.', 'The mental toughness that helps you overcome challenges.'] },
+  { word: 'integrity', stories: ['The quality of being honest and having strong moral principles.', 'It means doing the right thing even when no one is watching.', 'The state of being whole and undivided in your values.'] },
+  { word: 'humility', stories: ['A modest or low view of one\'s own importance.', 'It is the quality of being humble and not arrogant.', 'The ability to recognize your own limitations.'] },
+  { word: 'gratitude', stories: ['The quality of being thankful and showing appreciation.', 'It is associated with improved mental health and well-being.', 'A feeling of thankfulness for what you have.'] },
+  { word: 'forgiveness', stories: ['The action or process of forgiving or being forgiven.', 'It involves letting go of resentment and anger.', 'The act of pardoning someone for a wrongdoing.'] },
+  { word: 'compassion', stories: ['Sympathetic pity and concern for the sufferings or misfortunes of others.', 'It involves a desire to help those in need.', 'A deep feeling of empathy and kindness.'] },
+  { word: 'altruism', stories: ['The belief in or practice of disinterested and selfless concern for the well-being of others.', 'It is the opposite of selfishness.', 'The act of helping others without expecting anything in return.'] },
+  { word: 'hedonism', stories: ['The pursuit of pleasure and self-indulgence.', 'It is the ethical theory that pleasure is the highest good.', 'A lifestyle focused on maximizing enjoyment.'] },
+  { word: 'nihilism', stories: ['The rejection of all religious and moral principles, often in the belief that life is meaningless.', 'It is a philosophical viewpoint that denies objective meaning.', 'The belief that nothing has intrinsic value or purpose.'] },
+  { word: 'existentialism', stories: ['A philosophical theory emphasizing individual existence, freedom, and choice.', 'It asserts that individuals create their own meaning in life.', 'The philosophy that existence precedes essence.'] },
+  { word: 'stoicism', stories: ['An ancient Greek philosophy that teaches the development of self-control and fortitude.', 'It emphasizes virtue and rationality over emotions.', 'The practice of enduring pain or hardship without complaint.'] },
+  { word: 'epistemology', stories: ['The branch of philosophy that studies knowledge, its nature, and scope.', 'It asks questions like "What is knowledge?" and "How do we know what we know?".', 'The theory of knowledge and justified belief.'] },
+  { word: 'ontology', stories: ['The branch of metaphysics dealing with the nature of being.', 'It studies what exists and how things are categorized.', 'The philosophical study of existence.'] },
+  { word: 'metaphysics', stories: ['The branch of philosophy that deals with the first principles of things.', 'It explores abstract concepts like being, identity, time, and space.', 'The study of reality beyond the physical world.'] },
+  { word: 'ethics', stories: ['Moral principles that govern a person\'s behavior or the conducting of an activity.', 'It is the branch of philosophy that studies morality.', 'The study of what is right and wrong.'] },
+  { word: 'aesthetics', stories: ['The branch of philosophy that deals with the nature of beauty and taste.', 'It explores the nature of art and aesthetic experience.', 'The study of beauty and the philosophy of art.'] },
+  { word: 'logic', stories: ['Reasoning conducted or assessed according to strict principles of validity.', 'It is the study of correct inference and argumentation.', 'The systematic study of the form of valid arguments.'] },
+  { word: 'rhetoric', stories: ['The art of effective or persuasive speaking or writing.', 'It uses figures of speech and other compositional techniques.', 'The skill of using language to persuade or influence.'] },
+  { word: 'semantics', stories: ['The branch of linguistics and logic concerned with meaning.', 'It studies the relationship between words, phrases, and what they refer to.', 'The study of meaning in language.'] },
+  { word: 'syntax', stories: ['The arrangement of words and phrases to create well-formed sentences.', 'It is the set of rules for how words combine in a language.', 'The grammatical structure of sentences.'] },
+  { word: 'phonetics', stories: ['The study of speech sounds and their production, transmission, and reception.', 'It deals with the physical properties of sounds.', 'The branch of linguistics that studies the sounds of human speech.'] },
+  { word: 'linguistics', stories: ['The scientific study of language and its structure.', 'It includes syntax, semantics, phonetics, and pragmatics.', 'The systematic study of language.'] },
+  { word: 'anthropology', stories: ['The study of human societies and cultures and their development.', 'It includes archaeology, biological anthropology, and cultural anthropology.', 'The science of humanity and human behavior.'] },
+  { word: 'sociology', stories: ['The study of the development, structure, and functioning of human society.', 'It examines social relationships and institutions.', 'The scientific study of society and social behavior.'] },
+  { word: 'psychology', stories: ['The scientific study of the human mind and its functions.', 'It includes clinical, cognitive, and developmental psychology.', 'The science of behavior and mental processes.'] },
+  { word: 'neuroscience', stories: ['The scientific study of the nervous system.', 'It combines physiology, anatomy, and psychology.', 'The study of the brain and nervous system.'] },
+  { word: 'cognition', stories: ['The mental action or process of acquiring knowledge and understanding.', 'It includes thinking, knowing, remembering, and judging.', 'The mental processes involved in gaining knowledge.'] },
+  { word: 'perception', stories: ['The ability to see, hear, or become aware of something through the senses.', 'It involves interpreting sensory information.', 'The process of recognizing and interpreting sensory stimuli.'] },
+  { word: 'attention', stories: ['The faculty of concentrating on something to the exclusion of other things.', 'It can be selective, sustained, or divided.', 'The cognitive process of focusing on a particular stimulus.'] },
+  { word: 'motivation', stories: ['The reason or reasons one has for acting or behaving in a particular way.', 'It can be intrinsic or extrinsic.', 'The driving force behind your actions.'] },
+  { word: 'personality', stories: ['The combination of characteristics or qualities that form an individual\'s distinctive character.', 'It is often described using traits like openness and conscientiousness.', 'The unique pattern of thoughts, feelings, and behaviors.'] },
+  { word: 'intelligence', stories: ['The ability to acquire and apply knowledge and skills.', 'It can be measured by IQ tests and includes multiple types.', 'The capacity for learning, reasoning, and problem-solving.'] },
+  { word: 'creativity', stories: ['The use of imagination or original ideas to create something.', 'It involves divergent thinking and innovation.', 'The ability to produce novel and valuable ideas.'] },
+  { word: 'innovation', stories: ['The action or process of innovating.', 'It involves introducing new methods, ideas, or products.', 'The act of creating something new or improving something existing.'] },
+  { word: 'paradigm', stories: ['A typical example or pattern of something; a model.', 'In science, it is a distinct set of concepts or thought patterns.', 'A framework or worldview through which you interpret reality.'] },
+  { word: 'hegemony', stories: ['Leadership or dominance, especially by one country or social group over others.', 'It can be cultural, economic, or military.', 'The dominance of one group over others.'] },
+  { word: 'dialectic', stories: ['The art of investigating or discussing the truth of opinions.', 'It involves arriving at truth through dialogue and contradiction.', 'A method of argument involving contradictory ideas.'] },
+  { word: 'discourse', stories: ['Written or spoken communication or debate.', 'It can refer to a formal discussion or a body of text.', 'The way language is used in social contexts.'] },
+  { word: 'ideology', stories: ['A system of ideas and ideals, especially one that forms the basis of economic or political theory.', 'It shapes how people view the world and their place in it.', 'A set of beliefs that guides a group or society.'] },
+  { word: 'propaganda', stories: ['Information, especially of a biased or misleading nature, used to promote a political cause.', 'It is often spread through mass media.', 'The deliberate spreading of ideas to influence opinion.'] },
+  { word: 'censorship', stories: ['The suppression or prohibition of any parts of books, films, news, etc.', 'It is often imposed by governments or authorities.', 'The act of restricting access to information.'] },
+  { word: 'surveillance', stories: ['Close observation, especially of a suspected spy or criminal.', 'It can be carried out by governments or corporations.', 'The monitoring of people\'s activities.'] },
+  { word: 'privacy', stories: ['The state of being free from public attention.', 'It is the right to keep personal information secret.', 'The ability to control who has access to your personal life.'] },
+  { word: 'anonymity', stories: ['The condition of being anonymous.', 'It allows people to act without revealing their identity.', 'The state of having no name or identity known.'] },
+  { word: 'identity', stories: ['The fact of being who or what a person or thing is.', 'It includes personal, social, and cultural aspects.', 'The qualities and beliefs that make you who you are.'] },
+  { word: 'diversity', stories: ['The state of being diverse; variety.', 'It includes differences in race, ethnicity, gender, and more.', 'The inclusion of different types of people or things.'] },
+  { word: 'inclusion', stories: ['The action or state of including or of being included within a group or structure.', 'It involves making all people feel welcome and valued.', 'The practice of ensuring everyone has access and opportunity.'] },
+  { word: 'equity', stories: ['The quality of being fair and impartial.', 'It involves providing equal opportunities for all.', 'Fairness in the distribution of resources and opportunities.'] },
+  { word: 'justice', stories: ['Just behavior or treatment.', 'It is the quality of being fair and reasonable.', 'The principle of moral rightness.'] },
+  { word: 'freedom', stories: ['The power or right to act, speak, or think as one wants without hindrance.', 'It is a fundamental human right.', 'The state of being free from oppression.'] },
+  { word: 'democracy', stories: ['A system of government by the whole population or all the eligible members of a state.', 'It involves free and fair elections.', 'Government of the people, by the people, for the people.'] },
+  { word: 'republic', stories: ['A state in which supreme power is held by the people and their elected representatives.', 'It has an elected or nominated president rather than a monarch.', 'A form of government where citizens elect representatives.'] },
+  { word: 'monarchy', stories: ['A form of government with a monarch at the head.', 'The monarch may be a king, queen, emperor, or empress.', 'A system where a single person rules for life or until abdication.'] },
+  { word: 'oligarchy', stories: ['A small group of people having control of a country or organization.', 'It is often based on wealth, family, or military power.', 'Rule by a few powerful individuals.'] },
+  { word: 'autocracy', stories: ['A system of government by one person with absolute power.', 'It can be a dictatorship or absolute monarchy.', 'Rule by a single person with unlimited authority.'] },
+  { word: 'bureaucracy', stories: ['A system of government in which most decisions are made by state officials.', 'It is characterized by red tape and hierarchical structure.', 'A complex organizational structure with many rules.'] },
+  { word: 'sovereignty', stories: ['Supreme power or authority.', 'It is the authority of a state to govern itself.', 'The full right and power of a governing body over itself.'] },
+  { word: 'diplomacy', stories: ['The profession, activity, or skill of managing international relations.', 'It involves negotiation and communication between nations.', 'The art of dealing with people in a sensitive and effective way.'] },
+  { word: 'treaty', stories: ['A formally concluded and ratified agreement between countries.', 'It is binding under international law.', 'A written agreement between nations.'] },
+  { word: 'alliance', stories: ['A union or association formed for mutual benefit.', 'It can be between countries, organizations, or individuals.', 'A relationship of mutual support and cooperation.'] },
+  { word: 'conflict', stories: ['A serious disagreement or argument.', 'It can be between individuals, groups, or nations.', 'A struggle between opposing forces.'] },
+  { word: 'resolution', stories: ['A firm decision to do or not to do something.', 'It can also refer to the act of solving a problem.', 'A formal statement of intent or a solution to a conflict.'] },
+  { word: 'negotiation', stories: ['Discussion aimed at reaching an agreement.', 'It involves compromise and communication.', 'The process of bargaining to reach a mutually acceptable outcome.'] },
+  { word: 'compromise', stories: ['An agreement or a settlement of a dispute that is reached by each side making concessions.', 'It involves giving up some demands to reach a deal.', 'A middle ground between two opposing positions.'] },
+  { word: 'consensus', stories: ['General agreement among the members of a group.', 'It is reached through discussion and compromise.', 'A collective decision that everyone can support.'] },
+  { word: 'unanimous', stories: ['Fully in agreement.', 'It means everyone votes the same way.', 'A decision reached by all parties without dissent.'] },
+  { word: 'majority', stories: ['The greater number.', 'It is more than half of the total.', 'The group with the most votes or members.'] },
+  { word: 'minority', stories: ['The smaller number or part.', 'It is less than half of the total.', 'A group that is outnumbered by the majority.'] },
+  { word: 'veto', stories: ['A constitutional right to reject a decision or proposal made by a law-making body.', 'It is the power to block legislation.', 'The authority to forbid an action.'] },
+  { word: 'amendment', stories: ['A minor change or addition designed to improve a text, piece of legislation, etc.', 'It is an official change to a document or law.', 'A modification to a constitution or legal document.'] },
+  { word: 'constitution', stories: ['A body of fundamental principles or established precedents according to which a state is governed.', 'It outlines the rights of citizens and the structure of government.', 'The supreme law of a nation.'] },
+  { word: 'legislation', stories: ['Laws, considered collectively.', 'It is made by a legislative body.', 'The process of making or enacting laws.'] },
+  { word: 'jurisdiction', stories: ['The official power to make legal decisions and judgments.', 'It can be geographical or subject-matter based.', 'The authority of a court to hear a case.'] },
+  { word: 'precedent', stories: ['An earlier event or action that is regarded as an example or guide.', 'In law, it is a principle established by a previous court decision.', 'A standard or rule that is followed in similar cases.'] },
+  { word: 'verdict', stories: ['A decision on a disputed issue in a civil or criminal case.', 'It is the formal finding of a jury or judge.', 'The final decision in a court trial.'] },
+  { word: 'testimony', stories: ['A formal written or spoken statement, especially one given in a court of law.', 'It is evidence given by a witness under oath.', 'The account a person gives in a legal proceeding.'] },
+  { word: 'evidence', stories: ['The available body of facts or information indicating whether a belief or proposition is true.', 'It is used to prove or disprove a claim in court.', 'Information that helps establish the truth.'] },
+  { word: 'burden', stories: ['A load, typically a heavy one.', 'In law, it is the obligation to prove a disputed fact.', 'The weight of responsibility or proof.'] },
+  { word: 'liable', stories: ['Responsible by law.', 'It means legally answerable for something.', 'Legally obligated or accountable.'] },
+  { word: 'acquittal', stories: ['A judgment that a person is not guilty of the crime with which they have been charged.', 'It is the opposite of conviction.', 'The legal release from a criminal charge.'] },
+  { word: 'conviction', stories: ['A formal declaration that someone is guilty of a criminal offense.', 'It is the result of a criminal trial.', 'The state of being found guilty.'] },
+  { word: 'appeal', stories: ['Apply to a higher court for a reversal of the decision of a lower court.', 'It is a request for a new hearing.', 'The process of challenging a legal decision.'] },
+  { word: 'tort', stories: ['A wrongful act or an infringement of a right leading to legal liability.', 'It is a civil wrong that causes harm.', 'A legal wrong that results in injury or damage.'] },
+  { word: 'contract', stories: ['A written or spoken agreement, especially one concerning employment, sales, or tenancy.', 'It is enforceable by law.', 'A legally binding agreement between parties.'] },
+  { word: 'liability', stories: ['The state of being legally responsible for something.', 'It can also refer to a debt or obligation.', 'Legal responsibility for one\'s actions or debts.'] },
+  { word: 'asset', stories: ['A useful or valuable thing, person, or quality.', 'It can be a resource with economic value.', 'Something that provides a benefit or advantage.'] },
+  { word: 'equity', stories: ['The quality of being fair and impartial.', 'In finance, it is the value of a company\'s shares.', 'Ownership interest in a company.'] },
+  { word: 'capital', stories: ['Wealth in the form of money or other assets.', 'It is used to start or run a business.', 'Financial resources available for investment.'] },
+  { word: 'interest', stories: ['The price paid for the use of borrowed money.', 'It can also mean the feeling of wanting to know more about something.', 'A fee charged for borrowing money.'] },
+  { word: 'inflation', stories: ['A general increase in prices and fall in the purchasing value of money.', 'It is measured by the consumer price index.', 'The rate at which prices rise over time.'] },
+  { word: 'recession', stories: ['A period of temporary economic decline.', 'It is characterized by reduced trade and industrial activity.', 'A slowdown in economic growth.'] },
+  { word: 'depression', stories: ['A long and severe recession.', 'It is marked by high unemployment and low economic output.', 'A prolonged period of economic decline.'] },
+  { word: 'monopoly', stories: ['The exclusive possession or control of the supply of or trade in a commodity or service.', 'It can lead to higher prices and less competition.', 'A market dominated by a single seller.'] },
+  { word: 'oligopoly', stories: ['A state of limited competition, in which a market is shared by a small number of producers or sellers.', 'It is between a monopoly and perfect competition.', 'A market dominated by a few large firms.'] },
+  { word: 'tariff', stories: ['A tax or duty to be paid on a particular class of imports or exports.', 'It is used to protect domestic industries.', 'A tax on imported goods.'] },
+  { word: 'subsidy', stories: ['A sum of money granted by the government to assist an industry or business.', 'It is used to lower prices or support production.', 'Financial aid given to reduce costs.'] },
+  { word: 'quota', stories: ['A fixed share of something that a person or group is entitled to receive or is bound to contribute.', 'It can be a limit on imports.', 'A set number or proportion.'] },
+  { word: 'embargo', stories: ['An official ban on trade or other commercial activity with a particular country.', 'It is a form of economic sanction.', 'A government order restricting commerce.'] },
+  { word: 'sanction', stories: ['A threatened penalty for disobeying a law or rule.', 'It can be economic or diplomatic.', 'A measure taken to enforce compliance.'] },
+  { word: 'diplomatic', stories: ['Of or concerning diplomacy.', 'It involves managing international relations.', 'Relating to the profession of diplomacy.'] },
+  { word: 'sovereign', stories: ['A supreme ruler, especially a monarch.', 'It can also mean possessing supreme or ultimate power.', 'Having independent authority.'] },
+  { word: 'treaty', stories: ['A formally concluded and ratified agreement between countries.', 'It is binding under international law.', 'A written agreement between nations.'] },
+  { word: 'alliance', stories: ['A union or association formed for mutual benefit.', 'It can be between countries, organizations, or individuals.', 'A relationship of mutual support and cooperation.'] },
+  { word: 'conflict', stories: ['A serious disagreement or argument.', 'It can be between individuals, groups, or nations.', 'A struggle between opposing forces.'] },
+  { word: 'resolution', stories: ['A firm decision to do or not to do something.', 'It can also refer to the act of solving a problem.', 'A formal statement of intent or a solution to a conflict.'] },
+  { word: 'negotiation', stories: ['Discussion aimed at reaching an agreement.', 'It involves compromise and communication.', 'The process of bargaining to reach a mutually acceptable outcome.'] },
+  { word: 'compromise', stories: ['An agreement or a settlement of a dispute that is reached by each side making concessions.', 'It involves giving up some demands to reach a deal.', 'A middle ground between two opposing positions.'] },
+  { word: 'consensus', stories: ['General agreement among the members of a group.', 'It is reached through discussion and compromise.', 'A collective decision that everyone can support.'] },
+  { word: 'unanimous', stories: ['Fully in agreement.', 'It means everyone votes the same way.', 'A decision reached by all parties without dissent.'] },
+  { word: 'majority', stories: ['The greater number.', 'It is more than half of the total.', 'The group with the most votes or members.'] },
+  { word: 'minority', stories: ['The smaller number or part.', 'It is less than half of the total.', 'A group that is outnumbered by the majority.'] },
+  { word: 'veto', stories: ['A constitutional right to reject a decision or proposal made by a law-making body.', 'It is the power to block legislation.', 'The authority to forbid an action.'] },
+  { word: 'amendment', stories: ['A minor change or addition designed to improve a text, piece of legislation, etc.', 'It is an official change to a document or law.', 'A modification to a constitution or legal document.'] },
+  { word: 'constitution', stories: ['A body of fundamental principles or established precedents according to which a state is governed.', 'It outlines the rights of citizens and the structure of government.', 'The supreme law of a nation.'] },
+  { word: 'legislation', stories: ['Laws, considered collectively.', 'It is made by a legislative body.', 'The process of making or enacting laws.'] },
+  { word: 'jurisdiction', stories: ['The official power to make legal decisions and judgments.', 'It can be geographical or subject-matter based.', 'The authority of a court to hear a case.'] },
+  { word: 'precedent', stories: ['An earlier event or action that is regarded as an example or guide.', 'In law, it is a principle established by a previous court decision.', 'A standard or rule that is followed in similar cases.'] },
+  { word: 'verdict', stories: ['A decision on a disputed issue in a civil or criminal case.', 'It is the formal finding of a jury or judge.', 'The final decision in a court trial.'] },
+  { word: 'testimony', stories: ['A formal written or spoken statement, especially one given in a court of law.', 'It is evidence given by a witness under oath.', 'The account a person gives in a legal proceeding.'] },
+  { word: 'evidence', stories: ['The available body of facts or information indicating whether a belief or proposition is true.', 'It is used to prove or disprove a claim in court.', 'Information that helps establish the truth.'] },
+  { word: 'burden', stories: ['A load, typically a heavy one.', 'In law, it is the obligation to prove a disputed fact.', 'The weight of responsibility or proof.'] },
+  { word: 'liable', stories: ['Responsible by law.', 'It means legally answerable for something.', 'Legally obligated or accountable.'] },
+  { word: 'acquittal', stories: ['A judgment that a person is not guilty of the crime with which they have been charged.', 'It is the opposite of conviction.', 'The legal release from a criminal charge.'] },
+  { word: 'conviction', stories: ['A formal declaration that someone is guilty of a criminal offense.', 'It is the result of a criminal trial.', 'The state of being found guilty.'] },
+  { word: 'appeal', stories: ['Apply to a higher court for a reversal of the decision of a lower court.', 'It is a request for a new hearing.', 'The process of challenging a legal decision.'] },
+  { word: 'tort', stories: ['A wrongful act or an infringement of a right leading to legal liability.', 'It is a civil wrong that causes harm.', 'A legal wrong that results in injury or damage.'] },
+  { word: 'contract', stories: ['A written or spoken agreement, especially one concerning employment, sales, or tenancy.', 'It is enforceable by law.', 'A legally binding agreement between parties.'] },
+  { word: 'liability', stories: ['The state of being legally responsible for something.', 'It can also refer to a debt or obligation.', 'Legal responsibility for one\'s actions or debts.'] },
+  { word: 'asset', stories: ['A useful or valuable thing, person, or quality.', 'It can be a resource with economic value.', 'Something that provides a benefit or advantage.'] },
+  { word: 'equity', stories: ['The quality of being fair and impartial.', 'In finance, it is the value of a company\'s shares.', 'Ownership interest in a company.'] },
+  { word: 'capital', stories: ['Wealth in the form of money or other assets.', 'It is used to start or run a business.', 'Financial resources available for investment.'] },
+  { word: 'interest', stories: ['The price paid for the use of borrowed money.', 'It can also mean the feeling of wanting to know more about something.', 'A fee charged for borrowing money.'] },
+  { word: 'inflation', stories: ['A general increase in prices and fall in the purchasing value of money.', 'It is measured by the consumer price index.', 'The rate at which prices rise over time.'] },
+  { word: 'recession', stories: ['A period of temporary economic decline.', 'It is characterized by reduced trade and industrial activity.', 'A slowdown in economic growth.'] },
+  { word: 'depression', stories: ['A long and severe recession.', 'It is marked by high unemployment and low economic output.', 'A prolonged period of economic decline.'] },
+  { word: 'monopoly', stories: ['The exclusive possession or control of the supply of or trade in a commodity or service.', 'It can lead to higher prices and less competition.', 'A market dominated by a single seller.'] },
+  { word: 'oligopoly', stories: ['A state of limited competition, in which a market is shared by a small number of producers or sellers.', 'It is between a monopoly and perfect competition.', 'A market dominated by a few large firms.'] },
+  { word: 'tariff', stories: ['A tax or duty to be paid on a particular class of imports or exports.', 'It is used to protect domestic industries.', 'A tax on imported goods.'] },
+  { word: 'subsidy', stories: ['A sum of money granted by the government to assist an industry or business.', 'It is used to lower prices or support production.', 'Financial aid given to reduce costs.'] },
+  { word: 'quota', stories: ['A fixed share of something that a person or group is entitled to receive or is bound to contribute.', 'It can be a limit on imports.', 'A set number or proportion.'] },
+  { word: 'embargo', stories: ['An official ban on trade or other commercial activity with a particular country.', 'It is a form of economic sanction.', 'A government order restricting commerce.'] },
+  { word: 'sanction', stories: ['A threatened penalty for disobeying a law or rule.', 'It can be economic or diplomatic.', 'A measure taken to enforce compliance.'] },
+  { word: 'diplomatic', stories: ['Of or concerning diplomacy.', 'It involves managing international relations.', 'Relating to the profession of diplomacy.'] },
+  { word: 'sovereign', stories: ['A supreme ruler, especially a monarch.', 'It can also mean possessing supreme or ultimate power.', 'Having independent authority.'] }
 ];

@@ -1,6 +1,6 @@
 // ─────────────────────────────────────────────────────────────────────────────
 //  app/auth/callback/route.ts
-//  OAuth callback handler — exchanges the auth code for a session.
+//  OAuth callback handler - exchanges the auth code for a session.
 //  Supabase redirects here after Google login completes.
 // ─────────────────────────────────────────────────────────────────────────────
 

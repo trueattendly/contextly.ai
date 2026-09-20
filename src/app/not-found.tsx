@@ -7,18 +7,18 @@ import { Logo } from "@/components/Logo";
 
 export default function NotFound() {
   return (
-    <div className="relative min-h-dvh flex flex-col items-center justify-center bg-[#09090b] text-neutral-100 overflow-hidden font-inter">
+    <div className="relative min-h-dvh flex flex-col items-center justify-center bg-slateDark-800 text-peach-light overflow-hidden font-inter">
       {/* Background Dots Grid & Glowing Backdrops */}
       <div className="absolute inset-0 pointer-events-none z-0">
-        <div 
-          className="absolute inset-0 opacity-[0.015]" 
+        <div
+          className="absolute inset-0 opacity-[0.015]"
           style={{
             backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
             backgroundSize: "28px 28px",
           }}
         />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-cyan-500/[0.03] blur-[100px]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] h-[250px] rounded-full bg-fuchsia-500/[0.02] blur-[80px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-peach/[0.03] blur-[100px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] h-[250px] rounded-full bg-peach-light/[0.02] blur-[80px]" />
       </div>
 
       <div className="relative z-10 max-w-md w-full px-6 text-center">
@@ -45,7 +45,7 @@ export default function NotFound() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.5 }}
-          className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-3"
+          className="text-2xl sm:text-3xl font-extrabold text-peach-light tracking-tight mb-3"
         >
           Lost in Vector Space
         </motion.h1>
@@ -55,7 +55,7 @@ export default function NotFound() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.5 }}
-          className="text-neutral-400 text-xs sm:text-sm leading-relaxed mb-8 max-w-sm mx-auto"
+          className="text-peach/55 text-xs sm:text-sm leading-relaxed mb-8 max-w-sm mx-auto"
         >
           The coordinates you are looking for do not exist in our semantic index. It may have drifted or been purged from memory.
         </motion.p>
@@ -69,7 +69,7 @@ export default function NotFound() {
         >
           <a
             href="/"
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 shadow-[0_4px_20px_rgba(16,185,129,0.15)] hover:scale-[1.03] active:scale-[0.98] transition-all duration-200 cursor-pointer"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold text-slateDark-900 bg-peach hover:bg-peach-light active:bg-peach-dark shadow-md hover:scale-[1.03] active:scale-[0.98] transition-all duration-200 cursor-pointer"
           >
             <ArrowLeft size={13} />
             Return to Home
@@ -79,7 +79,7 @@ export default function NotFound() {
 
       {/* Footer */}
       <div className="absolute bottom-6 left-0 right-0 text-center z-10">
-        <p className="text-[10px] text-neutral-600 font-medium font-mono uppercase tracking-widest">
+        <p className="text-[10px] text-peach/35 font-medium font-mono uppercase tracking-widest">
           Contextle.ai // Vector Null
         </p>
       </div>

@@ -3,6 +3,7 @@ import { Inter, Space_Grotesk } from "next/font/google";
 import Script from "next/script";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/next";
+import FeedbackWidget from "@/components/FeedbackWidget";
 import "./globals.css";
 
 // ─── Fonts ────────────────────────────────────────────────────────────────────
@@ -21,6 +22,9 @@ const spaceGrotesk = Space_Grotesk({
 
 // ─── Site Constants ───────────────────────────────────────────────────────────
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.contextle.online";
+const SUPABASE_ORIGIN = process.env.NEXT_PUBLIC_SUPABASE_URL
+  ? new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).origin
+  : undefined;
 const SITE_NAME = "Contextle.ai";
 const SITE_DESCRIPTION =
   "Play Contextle.ai, the ultimate futuristic AI word game. Guess the secret word using real-time semantic similarity ranks and dynamic AI clue stories. Challenge your brain daily!";
@@ -32,17 +36,23 @@ export const metadata: Metadata = {
 
   // ── Core ──────────────────────────────────────────────────────────────────
   title: {
-    default: "Contextle - Ultimate Word Guessing Game Online",
+    default: "Contextle - Daily Semantic Word & Concept Guessing Game",
     template: "%s | Contextle",
   },
-  description: "Play the ultimate word guessing game online. Challenge your brain with Contextle by guessing the secret daily noun using AI-generated contextual stories. Free to play!",
+  description: "Guess the daily secret word or concept using AI semantic similarity ranks and hot/cold clues. Free to play, no signup needed.",
   keywords: [
     "word guessing game",
     "guess word game online",
     "contextle",
     "contextle online",
     "ai word game",
-    "daily word puzzle"
+    "daily word puzzle",
+    "semantic word game",
+    "contextual guessing game",
+    "daily vocabulary challenge",
+    "concept puzzle",
+    "wordle alternative",
+    "contextual ai game"
   ],
   authors: [{ name: "Contextle Team", url: SITE_URL }],
   creator: "Contextle",
@@ -79,7 +89,7 @@ export const metadata: Metadata = {
         url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Contextle – Guess the daily secret word using AI-powered semantic similarity",
+        alt: "Contextle - Guess the daily secret word using AI-powered semantic similarity",
         type: "image/png",
       },
     ],
@@ -95,7 +105,7 @@ export const metadata: Metadata = {
     images: [
       {
         url: OG_IMAGE,
-        alt: "Contextle – Daily AI word guessing game",
+        alt: "Contextle - Daily AI word guessing game",
       },
     ],
   },
@@ -118,10 +128,7 @@ export const metadata: Metadata = {
 
   // ── Verification ──────────────────────────────────────────────────────────
   verification: {
-    google: 'google-site-verification: google839c9735c5dad756.html',
-  },
-  other: {
-    "google-adsense-account": "ca-pub-8175902243591443",
+    google: 'google-site-verification: google4519ecd0d856ac16.html',
   },
 
   // ── Category ──────────────────────────────────────────────────────────────
@@ -131,8 +138,8 @@ export const metadata: Metadata = {
 // ─── Viewport ─────────────────────────────────────────────────────────────────
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#0a0a0f" },
-    { media: "(prefers-color-scheme: light)", color: "#0a0a0f" },
+    { media: "(prefers-color-scheme: dark)", color: "#203C3D" },
+    { media: "(prefers-color-scheme: light)", color: "#203C3D" },
   ],
   colorScheme: "dark",
   width: "device-width",
@@ -151,18 +158,18 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        {/* Google AdSense */}
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8175902243591443"
-          crossOrigin="anonymous"
-        />
+        {/* Preconnect to Supabase - the only third-party origin hit at runtime
+            (auth + DB). next/font self-hosts fonts at build time, so there's
+            no fonts.googleapis.com/gstatic.com request to preconnect to. */}
+        {SUPABASE_ORIGIN && <link rel="preconnect" href={SUPABASE_ORIGIN} crossOrigin="anonymous" />}
+        {SUPABASE_ORIGIN && <link rel="dns-prefetch" href={SUPABASE_ORIGIN} />}
       </head>
       <body
-        className="font-inter antialiased bg-neutral-950 text-neutral-100 selection:bg-violet-500/40 selection:text-violet-100"
+        className="font-inter antialiased bg-slateDark-800 text-peach-light selection:bg-peach/35 selection:text-slateDark-900"
         suppressHydrationWarning
       >
         {children}
+        <FeedbackWidget />
         <Analytics />
         <GoogleAnalytics gaId="G-QNCFTWNNC6" />
       </body>

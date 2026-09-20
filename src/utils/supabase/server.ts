@@ -38,8 +38,8 @@ export async function createClient() {
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 
 /**
- * Admin client using the service role key — bypasses RLS.
- * ⚠️  ONLY use in Route Handlers and Server Actions. NEVER on the client.
+ * Admin client using the service role key: bypasses RLS.
+ * WARNING: ONLY use in Route Handlers and Server Actions. NEVER on the client.
  */
 export async function createAdminClient() {
   const serviceKey =
