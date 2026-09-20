@@ -2,11 +2,13 @@
 
 import { use, useEffect, useState, useCallback, useRef } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
-import { ArrowLeft, Loader2, Swords, Trophy, Copy, Check, Search, ArrowRight } from "lucide-react";
+import { ArrowLeft, Loader2, Swords, Trophy, Copy, Check, Search, ArrowRight, Flag } from "lucide-react";
 import type { User } from "@supabase/supabase-js";
 import type { GameCategory, BattleDifficulty } from "@/types/game";
 import { GAME_CATEGORY_LABELS, DIFFICULTY_LABELS, formatDuration, getRankLabel, getRankColor } from "@/types/game";
+import { useModal } from "@/components/ui/ModalProvider";
 
 interface BattleRoomRow {
   code: string;
@@ -26,6 +28,8 @@ interface BattleRoomRow {
   player2_last_rank: number | null;
   player2_guess_count: number;
   winner_id: string | null;
+  win_reason: "solve" | "quota_best_rank" | "forfeit";
+  forfeit_by_id: string | null;
   solved_word: string | null;
   started_at: string | null;
   finished_at: string | null;
@@ -58,6 +62,8 @@ function RankHud({
 export default function BattleRoomPage({ params }: { params: Promise<{ code: string }> }) {
   const { code: rawCode } = use(params);
   const code = rawCode.toUpperCase();
+  const router = useRouter();
+  const { showConfirm } = useModal();
 
   const [user, setUser] = useState<User | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
@@ -70,6 +76,7 @@ export default function BattleRoomPage({ params }: { params: Promise<{ code: str
   const [error, setError] = useState<string | null>(null);
   const [elapsed, setElapsed] = useState(0);
   const [copied, setCopied] = useState(false);
+  const [forfeiting, setForfeiting] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [supabase] = useState(() => createClient());
@@ -191,6 +198,36 @@ export default function BattleRoomPage({ params }: { params: Promise<{ code: str
     }
   };
 
+  const handleForfeit = async () => {
+    const confirmed = await showConfirm({
+      title: "Forfeit Match?",
+      message: "Are you sure you want to leave? Forfeiting now will award an instant victory to your opponent.",
+      confirmText: "Forfeit & Leave",
+      cancelText: "Stay in Battle",
+      isDestructive: true,
+    });
+    if (!confirmed) return;
+
+    setForfeiting(true);
+    try {
+      const res = await fetch("/api/multiplayer/forfeit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        router.push("/battle");
+      } else {
+        setError(data.error ?? "Failed to forfeit the match.");
+        setForfeiting(false);
+      }
+    } catch {
+      setError("Network error. Check connection.");
+      setForfeiting(false);
+    }
+  };
+
   if (authLoading || (user && loadingRoom)) {
     return (
       <div className="min-h-dvh flex items-center justify-center bg-slateDark-800">
@@ -249,24 +286,38 @@ export default function BattleRoomPage({ params }: { params: Promise<{ code: str
   const myQuotaExhausted = myRank.guesses >= room.max_guesses;
   const winnerRank = iWon ? myRank.best : oppRank.best;
   const winSummary =
-    winnerRank != null && winnerRank <= 2
-      ? (winnerRank === 1 ? "Solved it exactly!" : "Won with a synonym!")
-      : "Won by closest proximity - both quotas reached";
+    room.win_reason === "forfeit"
+      ? (iWon ? "Opponent forfeited the match. You win!" : "You forfeited the match.")
+      : winnerRank != null && winnerRank <= 2
+        ? (winnerRank === 1 ? "Solved it exactly!" : "Won with a synonym!")
+        : "Won by closest proximity - both quotas reached";
 
   return (
     <main className="min-h-dvh bg-slateDark-800 text-peach-light flex flex-col p-4 md:p-8 items-center">
       <div className="max-w-2xl w-full">
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-6 gap-2">
           <Link href="/battle" className="flex items-center gap-2 text-peach hover:text-peach-light text-sm transition-colors">
             <ArrowLeft size={16} /> Lobby
           </Link>
-          <button
-            onClick={copyCode}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slateDark-700/[0.03] border border-slateDark-600/[0.08] text-[11px] font-mono font-bold tracking-widest text-peach/75 hover:border-slateDark-600/20 transition-all cursor-pointer"
-          >
-            {copied ? <Check size={12} className="text-peach" /> : <Copy size={12} />}
-            {code}
-          </button>
+          <div className="flex items-center gap-2">
+            {room.status === "active" && (
+              <button
+                onClick={handleForfeit}
+                disabled={forfeiting}
+                className="tap-target flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-rose-500/30 bg-rose-500/10 text-rose-300 hover:bg-rose-500/20 disabled:opacity-50 text-xs font-medium transition-colors cursor-pointer"
+              >
+                {forfeiting ? <Loader2 size={13} className="animate-spin" /> : <Flag className="w-3.5 h-3.5" />}
+                Forfeit
+              </button>
+            )}
+            <button
+              onClick={copyCode}
+              className="tap-target flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slateDark-700/[0.03] border border-slateDark-600/[0.08] text-[11px] font-mono font-bold tracking-widest text-peach/75 hover:border-slateDark-600/20 transition-all cursor-pointer"
+            >
+              {copied ? <Check size={12} className="text-peach" /> : <Copy size={12} />}
+              {code}
+            </button>
+          </div>
         </div>
 
         {isWaitingForOpponent ? (
@@ -382,7 +433,8 @@ export default function BattleRoomPage({ params }: { params: Promise<{ code: str
 
             {room.solved_word && (
               <p className="text-peach/55 text-xs leading-relaxed mb-1">
-                The concept was &ldquo;<span className="text-peach font-semibold">{room.solved_word}</span>&rdquo; - solved in {formatDuration(displaySeconds)}.
+                The concept was &ldquo;<span className="text-peach font-semibold">{room.solved_word}</span>&rdquo;
+                {room.win_reason === "forfeit" ? "." : ` - solved in ${formatDuration(displaySeconds)}.`}
               </p>
             )}
             {room.takeaways && room.takeaways.some(Boolean) && (

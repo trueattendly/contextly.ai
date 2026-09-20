@@ -1,7 +1,7 @@
 -- ==============================================================================
---  contextle.online — Master Database Migration (100% Idempotent)
+--  contextle.online - Master Database Migration (100% Idempotent)
 --  Fresh-install schema for a brand-new Supabase project, built from the
---  ACTUAL tables/columns this codebase's routes and pages read and write —
+--  ACTUAL tables/columns this codebase's routes and pages read and write -
 --  not a re-derived ideal schema. Safe to run once on an empty project, and
 --  equally safe to re-run any number of times on an already-provisioned one.
 --
@@ -11,7 +11,7 @@
 --  real 1v1 battle table is `battle_rooms` (+ `battle_secrets`), with
 --  `player1_guess_count` (no underscore), and the weekly leaderboard is
 --  computed on read by aggregating `game_sessions` in
---  /api/leaderboard/weekly — there's no separate table for it. This file
+--  /api/leaderboard/weekly - there's no separate table for it. This file
 --  matches what /src/app/api/**/route.ts and /src/app/**/page.tsx actually
 --  query, so running it against a fresh project and pointing this codebase
 --  at it works without any code changes.
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS public.profiles (
   avatar_url TEXT,
   current_level INTEGER DEFAULT 1,
   active_word TEXT,     -- current solo secret word; NULL when no round is active
-  current_story TEXT,   -- JSON-stringified GameContent (category/mysteryHook/stories/takeaways) — see src/types/game.ts parseGameContent()
+  current_story TEXT,   -- JSON-stringified GameContent (category/mysteryHook/stories/takeaways) - see src/types/game.ts parseGameContent()
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -172,7 +172,7 @@ CREATE TRIGGER on_auth_user_created
 
 
 -- ──────────────────────────────────────────────────────────────────────────────
--- 4. GAME SESSIONS (Solo + Battle round history — powers the weekly
+-- 4. GAME SESSIONS (Solo + Battle round history - powers the weekly
 --    leaderboard aggregation and the /history page)
 -- ──────────────────────────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS public.game_sessions (
@@ -262,7 +262,7 @@ ALTER TABLE public.game_sessions ENABLE ROW LEVEL SECURITY;
 -- ──────────────────────────────────────────────────────────────────────────────
 -- 5. BATTLE ROOMS (1v1 Realtime Multiplayer Matchmaking, State & Difficulty-
 --    Quota Engine)
---    Only rank/status/guess-count columns live here — the secret word never
+--    Only rank/status/guess-count columns live here - the secret word never
 --    does (see battle_secrets below), so it cannot leak through a Realtime
 --    subscription no matter what a client subscribes to.
 -- ──────────────────────────────────────────────────────────────────────────────
@@ -345,7 +345,7 @@ BEGIN
       CHECK (difficulty IN ('easy', 'medium', 'hard'));
   END IF;
 
-  -- Timestamps of each player's quota-exhausting guess — what makes the
+  -- Timestamps of each player's quota-exhausting guess - what makes the
   -- "faster elapsed time" tie-break possible when both players exhaust their
   -- quota with an identical best rank.
   IF NOT EXISTS (
@@ -360,6 +360,25 @@ BEGIN
     WHERE table_schema = 'public' AND table_name = 'battle_rooms' AND column_name = 'player2_quota_exhausted_at'
   ) THEN
     ALTER TABLE public.battle_rooms ADD COLUMN player2_quota_exhausted_at TIMESTAMPTZ;
+  END IF;
+
+  -- How a finished room was won: 'solve' (exact/synonym match), 'quota_best_rank'
+  -- (both players exhausted their quota, resolved by closest rank), or
+  -- 'forfeit' (an opponent left/resigned mid-match). Read by the battle page
+  -- to distinguish a forfeit-triggered win from a genuine solve.
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns
+    WHERE table_schema = 'public' AND table_name = 'battle_rooms' AND column_name = 'win_reason'
+  ) THEN
+    ALTER TABLE public.battle_rooms ADD COLUMN win_reason VARCHAR(20) NOT NULL DEFAULT 'solve'
+      CHECK (win_reason IN ('solve', 'quota_best_rank', 'forfeit'));
+  END IF;
+
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns
+    WHERE table_schema = 'public' AND table_name = 'battle_rooms' AND column_name = 'forfeit_by_id'
+  ) THEN
+    ALTER TABLE public.battle_rooms ADD COLUMN forfeit_by_id UUID REFERENCES auth.users(id);
   END IF;
 END $$;
 
@@ -401,7 +420,7 @@ END $$;
 -- Intentionally a separate table, excluded from the realtime publication,
 -- with RLS enabled and NO policies (default-deny for anon/authenticated).
 -- Only the service-role admin client (which bypasses RLS) can ever read or
--- write it — this is the actual enforcement point for "the opponent's
+-- write it - this is the actual enforcement point for "the opponent's
 -- guessed word must never be transmitted": the word never appears in any
 -- row a client is allowed to select or subscribe to.
 CREATE TABLE IF NOT EXISTS public.battle_secrets (

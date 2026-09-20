@@ -4,6 +4,8 @@ import Script from "next/script";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/next";
 import FeedbackWidget from "@/components/FeedbackWidget";
+import PWAInstallBanner from "@/components/PWAInstallBanner";
+import { ModalProvider } from "@/components/ui/ModalProvider";
 import "./globals.css";
 
 // ─── Fonts ────────────────────────────────────────────────────────────────────
@@ -126,6 +128,13 @@ export const metadata: Metadata = {
   // ── Manifest ──────────────────────────────────────────────────────────────
   manifest: "/site.webmanifest",
 
+  // ── PWA / Mobile Home Screen ─────────────────────────────────────────────
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Contextle",
+  },
+
   // ── Verification ──────────────────────────────────────────────────────────
   verification: {
     google: 'google-site-verification: google4519ecd0d856ac16.html',
@@ -145,6 +154,9 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
+  // Lets the on-screen keyboard resize the layout instead of overlaying it,
+  // so the HUD/guess input does not jump or get covered on mobile Safari/Chrome.
+  interactiveWidget: "resizes-content",
 };
 
 // ─── Root Layout ──────────────────────────────────────────────────────────────
@@ -168,8 +180,11 @@ export default function RootLayout({
         className="font-inter antialiased bg-slateDark-800 text-peach-light selection:bg-peach/35 selection:text-slateDark-900"
         suppressHydrationWarning
       >
-        {children}
-        <FeedbackWidget />
+        <ModalProvider>
+          {children}
+          <FeedbackWidget />
+          <PWAInstallBanner />
+        </ModalProvider>
         <Analytics />
         <GoogleAnalytics gaId="G-QNCFTWNNC6" />
       </body>

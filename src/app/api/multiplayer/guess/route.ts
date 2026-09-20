@@ -125,7 +125,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
     if (won) {
       winnerId = user.id;
-      finalizeUpdate = { ...progressUpdate, status: "finished", winner_id: winnerId, solved_word: secret.word.toLowerCase(), finished_at: nowIso };
+      finalizeUpdate = { ...progressUpdate, status: "finished", winner_id: winnerId, win_reason: "solve", solved_word: secret.word.toLowerCase(), finished_at: nowIso };
     } else if (justExhaustedQuota && otherGuessCount >= room.max_guesses) {
       // Mutual quota exhaustion, neither player solved it - resolve by best
       // rank (lower wins), tie-broken by who exhausted their quota first.
@@ -138,7 +138,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         const otherExhaustedAt = otherQuotaExhaustedAt ? new Date(otherQuotaExhaustedAt).getTime() : Infinity;
         winnerId = myExhaustedAt <= otherExhaustedAt ? user.id : (isPlayer1 ? room.player2_id : room.player1_id);
       }
-      finalizeUpdate = { ...progressUpdate, status: "finished", winner_id: winnerId, solved_word: secret.word.toLowerCase(), finished_at: nowIso };
+      finalizeUpdate = { ...progressUpdate, status: "finished", winner_id: winnerId, win_reason: "quota_best_rank", solved_word: secret.word.toLowerCase(), finished_at: nowIso };
     }
 
     if (finalizeUpdate) {

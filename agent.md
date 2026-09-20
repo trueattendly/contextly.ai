@@ -1,7 +1,7 @@
 <!-- BEGIN:nextjs-agent-rules -->
 # This is NOT the Next.js you know
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
+This version has breaking changes - APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
 <!-- END:nextjs-agent-rules -->
 
 ## Strict Database Migration & Schema Protocol
@@ -30,7 +30,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
    - If visual tier indicators are needed (e.g., temperature ranges), use semantic CSS badge components, custom SVG icons, or monochromatic glyphs instead of emoji characters.
 
    Typography & Dash Syntax:
-   - Do NOT use em dashes (`—`) anywhere in copy, documentation, logs, or UI text.
+   - Do NOT use em dashes (`-`) anywhere in copy, documentation, logs, or UI text.
    - Always use standard hyphens (`-`) or colons (`:`) for separators.
 
 ## Strict Changelog & Audit Trail Protocol
@@ -41,7 +41,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 2. Strict Formatting & Action Classification:
    - Use standard ISO timestamps: `YYYY-MM-DD HH:MM UTC`.
-   - Never use em dashes (`—`); use strict standard hyphens (`-`) or colons (`:`).
+   - Never use em dashes (`-`); use strict standard hyphens (`-`) or colons (`:`).
    - Never use raw Unicode emojis anywhere in log entries.
    - Categorize all entries under these exact action tags:
      * `[ADDED]`: For new components, routes, features, or environment variables.
@@ -60,3 +60,8 @@ This version has breaking changes — APIs, conventions, and file structure may 
    - Description: Concise 1-2 sentence description of what was changed and the exact reason why.
    - Breaking Changes / Migrations: State "None" or describe manual steps (e.g., "Run query in Supabase SQL Editor").
    ```
+
+## Strict Prohibitions
+
+- NEVER use native browser dialogs (`alert()`, `confirm()`, or `prompt()`).
+- Always use the custom UI modal hooks (`useModal()` / `showAlert()` / `showConfirm()`) from `src/components/ui/ModalProvider.tsx`.

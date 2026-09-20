@@ -54,7 +54,7 @@ export default function FeedbackWidget() {
       <button
         onClick={() => setOpen(true)}
         aria-label="Send feedback"
-        className="fixed bottom-3 left-3 z-40 flex items-center gap-1.5 px-3 py-2 rounded-full bg-slateDark-700/4 border border-slateDark-600/10 text-peach/75 text-[11px] font-semibold backdrop-blur-sm hover:border-peach/30 hover:text-peach transition-all cursor-pointer"
+        className="tap-target fixed bottom-3 left-3 z-40 flex items-center gap-1.5 px-3 py-2 rounded-full bg-slateDark-700/4 border border-slateDark-600/10 text-peach/75 text-[11px] font-semibold backdrop-blur-sm hover:border-peach/30 hover:text-peach transition-all cursor-pointer [.pwa-banner-open_&]:bottom-20"
       >
         <MessageSquarePlus size={13} />
         <span className="hidden sm:inline">Feedback</span>

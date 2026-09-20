@@ -1,11 +1,12 @@
 {
-  "name": "Contextle.ai",
+  "name": "Contextle - Concept Detective",
   "short_name": "Contextle",
-  "description": "The AI-powered daily word guessing game",
+  "description": "Daily semantic deduction and 1v1 word concept battles.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0a0a0f",
-  "theme_color": "#7c3aed",
+  "orientation": "portrait-primary",
+  "background_color": "#203C3D",
+  "theme_color": "#203C3D",
   "icons": [
     {
       "src": "/icon-192.png",

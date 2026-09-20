@@ -2,6 +2,30 @@
 
 All notable changes to this project are documented in this file, per the Strict Changelog & Audit Trail Protocol defined in `agent.md`.
 
+### [2026-09-21 06:10 UTC] - 1v1 Battle Forfeit and Resignation Engine
+- Action: ADDED
+- Files Affected: `save_data_migration.sql`, `src/app/api/multiplayer/forfeit/route.ts`, `src/app/battle/[code]/page.tsx`
+- Description: Added a forfeit flow for active battle rooms. New `win_reason` (`solve` / `quota_best_rank` / `forfeit`) and `forfeit_by_id` columns on `battle_rooms` (the real 1v1 table; no `multiplayer_rooms` table exists in this codebase). The new `POST /api/multiplayer/forfeit` route derives the resigning player from their authenticated session (never a client-supplied id), verifies the room is active, awards the win to the opponent, records the secret word and a `game_sessions` win row for them, and finalizes with a `status = "active"` race guard matching the existing guess route's pattern. The battle page adds a `useModal()`-driven confirm dialog and a header Forfeit button, and the existing generic Realtime finish-detection (`status === "finished"`, already present) now also renders forfeit-specific victory copy.
+- Breaking Changes / Migrations: Run the appended block in `save_data_migration.sql` in the Supabase SQL Editor before deploying. Also updated `src/app/api/multiplayer/guess/route.ts` to set `win_reason` explicitly (`solve` or `quota_best_rank`) on finish, since it previously relied on the column's default and would have mislabeled quota-resolved wins as `solve`.
+
+### [2026-09-21 05:40 UTC] - Centralized Promise-Based Modal System
+- Action: ADDED
+- Files Affected: `src/components/ui/ModalProvider.tsx`, `src/app/layout.tsx`
+- Description: Added a `ModalProvider` context exposing `useModal()` with `showAlert()` and `showConfirm()`, rendering an accessible (`role="alertdialog"`, focus-managed, Escape-to-dismiss) animated modal styled to the Slate Gray and Peach Fuzz palette, with semantic icon/color mapping for info, warning, error, and success. Wired into `layout.tsx` so it wraps the whole app.
+- Breaking Changes / Migrations: None.
+
+### [2026-09-21 05:40 UTC] - Removed the Only Native Browser Dialog and Added a Prohibition Rule
+- Action: MODIFIED
+- Files Affected: `src/app/stats/page.tsx`, `agent.md`
+- Description: Audited the full codebase for `alert()`, `confirm()`, and `prompt()`. Found exactly one: a clipboard-copy `alert()` in `stats/page.tsx`, now replaced with `showAlert()`. No `confirm()` or `prompt()` existed anywhere. Added a Strict Prohibitions rule to `agent.md` banning native dialogs going forward.
+- Breaking Changes / Migrations: None. No battle-forfeit or single-player-forfeit confirmation was added, since no such feature exists yet to gate; see summary for details.
+
+### [2026-09-21 05:10 UTC] - Progressive Web App Setup and Mobile Viewport Ergonomics
+- Action: ADDED
+- Files Affected: `src/app/manifest.ts` (not created; existing `public/site.webmanifest` updated instead, see description), `src/components/PWAInstallBanner.tsx`, `src/app/layout.tsx`, `src/app/globals.css`, `public/sw.js`, `public/site.webmanifest`, `src/components/FeedbackWidget.tsx`, `next.config.ts`
+- Description: Implemented full PWA setup: a caching service worker (`public/sw.js`, excludes `/api/`, `/auth/`, and `/admin` from caching to avoid serving stale game state), a dismissible "Install App" bottom banner (`PWAInstallBanner.tsx`) handling `beforeinstallprompt` on Chromium and an iOS Safari "Add to Home Screen" hint, `appleWebApp` and `interactiveWidget: resizes-content` metadata in `layout.tsx` to stop the virtual keyboard from covering the HUD, safe-area (`pt-safe`/`pb-safe`) and `tap-target` (44x44 minimum) utility classes in `globals.css`, a mobile-scoped 16px minimum input font size to stop iOS auto-zoom on focus, and updated `site.webmanifest` colors/name to the Slate Gray and Peach Fuzz brand. Nudged the existing feedback widget up via a shared `pwa-banner-open` class so it does not overlap the install banner.
+- Breaking Changes / Migrations: None. Existing `public/site.webmanifest` (already linked via `metadata.manifest` in `layout.tsx`) was updated in place rather than adding a parallel `app/manifest.ts` route, to avoid two competing manifest URLs. Full-app 44x44 touch-target compliance was not audited component-by-component beyond the new banner and the feedback widget; flagged as follow-up work.
+
 ### [2026-09-21 04:30 UTC] - Overhauled Interactive Showcase Landing Page with GSAP ScrollTrigger
 - Action: ADDED
 - Files Affected: `src/components/InteractiveHudDemo.tsx`, `package.json`

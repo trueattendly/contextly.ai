@@ -3,8 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, Share2, Flame, Target, Trophy } from "lucide-react";
+import { useModal } from "@/components/ui/ModalProvider";
 
 export default function StatsPage() {
+  const { showAlert } = useModal();
   const [stats] = useState(() => {
     let streak = 5;
     if (typeof window !== "undefined") {
@@ -20,7 +22,7 @@ export default function StatsPage() {
       navigator.share({ text }).catch(console.error);
     } else {
       navigator.clipboard.writeText(text);
-      alert("Streak copied to clipboard!");
+      showAlert({ title: "Copied", message: "Streak copied to clipboard.", type: "success" });
     }
   };
 
