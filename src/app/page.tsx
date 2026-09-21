@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { createClient } from "@/utils/supabase/server";
-import LandingPage from "@/components/LandingPage";
-import GameClientView from "@/components/GameClientView";
+import HomeView from "@/components/HomeView";
 
 export const metadata: Metadata = {
   title: "Crack Concepts, Not Just Letters | Contextle",
@@ -15,9 +14,5 @@ export default async function HomePage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) {
-    return <LandingPage user={null} />;
-  }
-
-  return <GameClientView initialUser={user} />;
+  return <HomeView initialUser={user} />;
 }

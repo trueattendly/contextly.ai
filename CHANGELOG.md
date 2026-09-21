@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented in this file, per the Strict Changelog & Audit Trail Protocol defined in `agent.md`.
 
+### [2026-09-21 08:20 UTC] - Client-Side Auth Fallback to Prevent Landing Page Trap on Root Route
+- Action: FIXED
+- Files Affected: `src/app/page.tsx`, `src/components/HomeView.tsx` (new)
+- Description: `src/app/page.tsx` already rendered `GameClientView` directly whenever the server-side session check via `@supabase/ssr` cookies found a user, with no client-side branching or hydration flash. Added `HomeView`, a thin client wrapper that also subscribes to `supabase.auth.onAuthStateChange` and calls `getSession()` as a fallback for the one real gap: a client-side (soft) navigation back to `/` that reuses a stale cached RSC payload rendered before sign-in. If a session is detected client-side that the server render missed, the view swaps to `GameClientView` immediately via React state, no full reload required. Verified `src/app/auth/callback/route.ts` against the Next.js Route Handler cookie docs: `exchangeCodeForSession` writes cookies via `cookies().set()` inside the handler, which Next.js attaches to the outgoing `NextResponse.redirect` automatically, so no separate cookie-flush fix was needed there.
+- Breaking Changes / Migrations: None. Deliberately did not add a full-page loader gating the initial render, since `initialUser` is null for the overwhelming majority of visits (anonymous traffic) and gating the landing page's SEO content (FAQ/HowTo JSON-LD, marketing copy) behind a client-only spinner would regress crawlability, LCP, and CLS for that path. `GameClientView` already renders its own centered loader while it syncs the profile for a freshly-detected user, which covers the actual transition moment without a redundant second spinner.
+
 ### [2026-09-21 07:45 UTC] - Resolved Google OAuth Subdomain Resolution and Mobile Landing Page Visibility
 - Action: FIXED
 - Files Affected: `src/utils/getURL.ts`, `src/components/PlayDailyButton.tsx`, `src/app/auth/callback/route.ts`, `src/app/layout.tsx`, `src/components/LandingPage.tsx`
