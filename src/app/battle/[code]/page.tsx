@@ -4,7 +4,7 @@ import { use, useEffect, useState, useCallback, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
-import { ArrowLeft, Loader2, Swords, Trophy, Copy, Check, Search, ArrowRight, Flag } from "lucide-react";
+import { ArrowLeft, Loader2, Swords, Trophy, Copy, Check, Search, ArrowRight, Flag, RotateCcw, User as UserIcon } from "lucide-react";
 import type { User } from "@supabase/supabase-js";
 import type { GameCategory, BattleDifficulty } from "@/types/game";
 import { GAME_CATEGORY_LABELS, DIFFICULTY_LABELS, formatDuration, getRankLabel, getRankColor } from "@/types/game";
@@ -31,6 +31,8 @@ interface BattleRoomRow {
   win_reason: "solve" | "quota_best_rank" | "forfeit";
   forfeit_by_id: string | null;
   solved_word: string | null;
+  rematch_p1: boolean;
+  rematch_p2: boolean;
   started_at: string | null;
   finished_at: string | null;
 }
@@ -77,7 +79,13 @@ export default function BattleRoomPage({ params }: { params: Promise<{ code: str
   const [elapsed, setElapsed] = useState(0);
   const [copied, setCopied] = useState(false);
   const [forfeiting, setForfeiting] = useState(false);
+  const [requestingRematch, setRequestingRematch] = useState(false);
+  const [player1Name, setPlayer1Name] = useState<string | null>(null);
+  const [player2Name, setPlayer2Name] = useState<string | null>(null);
+  const [justJoinedBanner, setJustJoinedBanner] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const prevStatusRef = useRef<BattleRoomRow["status"] | null>(null);
+  const joinedBannerTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const [supabase] = useState(() => createClient());
 
@@ -88,16 +96,26 @@ export default function BattleRoomPage({ params }: { params: Promise<{ code: str
     });
   }, [supabase]);
 
+  // Fetches the room plus each player's resolved display name in one call -
+  // see src/app/api/multiplayer/room/[code]/route.ts for the name-resolution
+  // fallback chain (username -> display_name -> email prefix -> "Player N").
   const fetchRoom = useCallback(async () => {
-    const { data, error: fetchError } = await supabase.from("battle_rooms").select("*").eq("code", code).single();
-    if (!fetchError && data) {
-      setRoom(data as BattleRoomRow);
-      setNotFound(false);
-    } else {
+    try {
+      const res = await fetch(`/api/multiplayer/room/${code}`);
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setRoom(data.room as BattleRoomRow);
+        setPlayer1Name(data.player1?.name ?? "Player 1");
+        setPlayer2Name(data.player2?.name ?? null);
+        setNotFound(false);
+      } else {
+        setNotFound(true);
+      }
+    } catch {
       setNotFound(true);
     }
     setLoadingRoom(false);
-  }, [code, supabase]);
+  }, [code]);
 
   useEffect(() => {
     if (!user) return;
@@ -108,6 +126,9 @@ export default function BattleRoomPage({ params }: { params: Promise<{ code: str
 
   // Realtime: the opponent's guesses arrive here as row UPDATEs containing
   // only rank/guess-count/status columns - never the guessed word itself.
+  // Realtime payloads are raw table rows with no joined profile name, so a
+  // waiting -> active transition (an opponent just joined) also triggers a
+  // fetchRoom() to pick up their resolved name via the API route above.
   useEffect(() => {
     if (!user) return;
     const channel = supabase
@@ -115,13 +136,42 @@ export default function BattleRoomPage({ params }: { params: Promise<{ code: str
       .on(
         "postgres_changes",
         { event: "UPDATE", schema: "public", table: "battle_rooms", filter: `code=eq.${code}` },
-        (payload) => setRoom(payload.new as BattleRoomRow)
+        (payload) => {
+          const next = payload.new as BattleRoomRow;
+          if (prevStatusRef.current === "waiting" && next.status === "active") {
+            setJustJoinedBanner(true);
+            fetchRoom();
+            if (joinedBannerTimeoutRef.current) clearTimeout(joinedBannerTimeoutRef.current);
+            joinedBannerTimeoutRef.current = setTimeout(() => setJustJoinedBanner(false), 1800);
+          }
+          prevStatusRef.current = next.status;
+          setRoom(next);
+        }
       )
       .subscribe();
     return () => {
       supabase.removeChannel(channel);
+      if (joinedBannerTimeoutRef.current) clearTimeout(joinedBannerTimeoutRef.current);
     };
-  }, [user, code, supabase]);
+  }, [user, code, supabase, fetchRoom]);
+
+  // Keeps the transition ref in sync with room updates that don't come
+  // through the Realtime handler above (the initial fetchRoom(), the
+  // "waiting" fallback poll, and this player's own action responses).
+  useEffect(() => {
+    if (room?.status) prevStatusRef.current = room.status;
+  }, [room?.status]);
+
+  // Fallback poll while waiting for an opponent: guarantees the host still
+  // transitions off the lobby screen within a few seconds even if the
+  // Realtime WebSocket connection dropped or never fully established.
+  useEffect(() => {
+    if (!user || room?.status !== "waiting") return;
+    const id = setInterval(() => {
+      fetchRoom();
+    }, 3000);
+    return () => clearInterval(id);
+  }, [user, room?.status, fetchRoom]);
 
   // Unified gameplay timer: ticks from started_at, freezes once finished.
   useEffect(() => {
@@ -228,6 +278,29 @@ export default function BattleRoomPage({ params }: { params: Promise<{ code: str
     }
   };
 
+  const handleRematch = async () => {
+    setRequestingRematch(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/multiplayer/rematch", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setInputValue("");
+        await fetchRoom(); // Picks up our own flag immediately; Realtime carries the opponent's.
+      } else {
+        setError(data.error ?? "Failed to request a rematch.");
+      }
+    } catch {
+      setError("Network error. Check connection.");
+    } finally {
+      setRequestingRematch(false);
+    }
+  };
+
   if (authLoading || (user && loadingRoom)) {
     return (
       <div className="min-h-dvh flex items-center justify-center bg-slateDark-800">
@@ -270,6 +343,8 @@ export default function BattleRoomPage({ params }: { params: Promise<{ code: str
   }
 
   const isPlayer1 = room.player1_id === user.id;
+  const myName = (isPlayer1 ? player1Name : player2Name) ?? "You";
+  const opponentName = (isPlayer1 ? player2Name : player1Name) ?? "Opponent";
   const myRank = {
     last: isPlayer1 ? room.player1_last_rank : room.player2_last_rank,
     best: isPlayer1 ? room.player1_best_rank : room.player2_best_rank,
@@ -287,10 +362,12 @@ export default function BattleRoomPage({ params }: { params: Promise<{ code: str
   const winnerRank = iWon ? myRank.best : oppRank.best;
   const winSummary =
     room.win_reason === "forfeit"
-      ? (iWon ? "Opponent forfeited the match. You win!" : "You forfeited the match.")
+      ? (iWon ? `${opponentName} forfeited the match. You win!` : "You forfeited the match.")
       : winnerRank != null && winnerRank <= 2
         ? (winnerRank === 1 ? "Solved it exactly!" : "Won with a synonym!")
         : "Won by closest proximity - both quotas reached";
+  const myRematchRequested = isPlayer1 ? room.rematch_p1 : room.rematch_p2;
+  const opponentRematchRequested = isPlayer1 ? room.rematch_p2 : room.rematch_p1;
 
   return (
     <main className="min-h-dvh bg-slateDark-800 text-peach-light flex flex-col p-4 md:p-8 items-center">
@@ -320,7 +397,13 @@ export default function BattleRoomPage({ params }: { params: Promise<{ code: str
           </div>
         </div>
 
-        {isWaitingForOpponent ? (
+        {justJoinedBanner ? (
+          <div className="glass rounded-2xl border border-peach/20 bg-peach/[0.03] p-10 flex flex-col items-center text-center">
+            <UserIcon className="w-6 h-6 text-peach mb-4" aria-hidden="true" />
+            <h1 className="text-lg font-bold mb-2">{opponentName} has joined the arena!</h1>
+            <p className="text-peach/55 text-xs max-w-xs">Get ready - the match is starting...</p>
+          </div>
+        ) : isWaitingForOpponent ? (
           <div className="glass rounded-2xl border border-slateDark-600/[0.05] p-10 flex flex-col items-center text-center">
             <Loader2 size={24} className="text-peach animate-spin mb-4" />
             <h1 className="text-lg font-bold mb-2">Waiting for an opponent...</h1>
@@ -353,9 +436,19 @@ export default function BattleRoomPage({ params }: { params: Promise<{ code: str
             )}
 
             {/* HUD */}
-            <div className="flex gap-3 mb-6">
+            <div className="flex gap-3 mb-3">
               <RankHud label="You" rank={myRank.last} guesses={myRank.guesses} maxGuesses={room.max_guesses} highlight />
               <RankHud label="Opponent" rank={oppRank.last} guesses={oppRank.guesses} maxGuesses={room.max_guesses} highlight={false} />
+            </div>
+
+            {/* Matchup bar: resolved player names either side of the timer */}
+            <div className="flex items-center justify-between mb-6 px-1 gap-2">
+              <span className="text-xs font-bold text-peach truncate max-w-[35%]">You ({myName})</span>
+              <span className="flex-shrink-0 text-[10px] font-mono font-bold text-peach/40 uppercase tracking-widest">VS</span>
+              <span className="text-xs font-bold text-peach/90 truncate max-w-[35%] flex items-center justify-end gap-1">
+                <UserIcon className="w-3.5 h-3.5 text-peach/70 inline mr-1" aria-hidden="true" />
+                {opponentName}
+              </span>
             </div>
 
             {room.status === "active" && (
@@ -412,7 +505,7 @@ export default function BattleRoomPage({ params }: { params: Promise<{ code: str
               <Trophy size={18} className="text-peach" />
             </div>
             <h2 className="font-bold text-lg text-peach-light tracking-tight mb-1">
-              {iWon ? "You Won!" : "Opponent Won"}
+              {iWon ? `You Defeated ${opponentName}!` : `${opponentName} Won`}
             </h2>
             <p className="text-[11px] font-semibold text-peach mb-3">{winSummary}</p>
 
@@ -448,11 +541,35 @@ export default function BattleRoomPage({ params }: { params: Promise<{ code: str
                 ))}
               </div>
             )}
+            {opponentRematchRequested && !myRematchRequested ? (
+              <button
+                onClick={handleRematch}
+                disabled={requestingRematch}
+                className="mt-2 w-full inline-flex py-2 px-4 rounded-lg font-semibold text-xs text-slateDark-900 bg-peach hover:bg-peach-light active:bg-peach-dark disabled:opacity-60 transition-all duration-150 items-center justify-center gap-1.5 shadow-md animate-pulse cursor-pointer"
+              >
+                {requestingRematch ? <Loader2 className="w-4 h-4 animate-spin" /> : <RotateCcw className="w-4 h-4" />}
+                Opponent requested a rematch! Accept Rematch
+              </button>
+            ) : myRematchRequested ? (
+              <div className="mt-2 w-full inline-flex py-2 px-4 rounded-lg font-semibold text-xs text-peach/70 bg-slateDark-700/[0.03] border border-slateDark-600/[0.08] items-center justify-center gap-1.5">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Waiting for opponent to accept...
+              </div>
+            ) : (
+              <button
+                onClick={handleRematch}
+                disabled={requestingRematch}
+                className="mt-2 w-full inline-flex py-2 px-4 rounded-lg font-semibold text-xs text-slateDark-900 bg-peach hover:bg-peach-light active:bg-peach-dark disabled:opacity-60 transition-all duration-150 items-center justify-center gap-1.5 shadow-md cursor-pointer"
+              >
+                {requestingRematch ? <Loader2 className="w-4 h-4 animate-spin" /> : <RotateCcw className="w-4 h-4" />}
+                Request Rematch
+              </button>
+            )}
             <Link
               href="/battle"
-              className="mt-2 w-full inline-flex py-2 px-4 rounded-lg font-semibold text-xs text-slateDark-900 bg-peach hover:bg-peach-light active:bg-peach-dark transition-all duration-150 items-center justify-center gap-1.5 shadow-md"
+              className="mt-2.5 w-full inline-flex py-2 px-4 rounded-lg font-semibold text-xs text-peach/60 hover:text-peach transition-colors items-center justify-center"
             >
-              New Battle
+              Back to Lobby
             </Link>
           </div>
         </div>

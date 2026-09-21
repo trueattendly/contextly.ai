@@ -380,6 +380,23 @@ BEGIN
   ) THEN
     ALTER TABLE public.battle_rooms ADD COLUMN forfeit_by_id UUID REFERENCES auth.users(id);
   END IF;
+
+  -- Mutual rematch consensus: each player flips their own flag on a finished
+  -- room via POST /api/multiplayer/rematch; the room only resets to a fresh
+  -- active round once both are true (see that route for the reset logic).
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns
+    WHERE table_schema = 'public' AND table_name = 'battle_rooms' AND column_name = 'rematch_p1'
+  ) THEN
+    ALTER TABLE public.battle_rooms ADD COLUMN rematch_p1 BOOLEAN NOT NULL DEFAULT false;
+  END IF;
+
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns
+    WHERE table_schema = 'public' AND table_name = 'battle_rooms' AND column_name = 'rematch_p2'
+  ) THEN
+    ALTER TABLE public.battle_rooms ADD COLUMN rematch_p2 BOOLEAN NOT NULL DEFAULT false;
+  END IF;
 END $$;
 
 CREATE INDEX IF NOT EXISTS idx_battle_rooms_status ON public.battle_rooms(status);
