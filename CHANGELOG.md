@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented in this file, per the Strict Changelog & Audit Trail Protocol defined in `agent.md`.
 
+### [2026-09-21 07:45 UTC] - Resolved Google OAuth Subdomain Resolution and Mobile Landing Page Visibility
+- Action: FIXED
+- Files Affected: `src/utils/getURL.ts`, `src/components/PlayDailyButton.tsx`, `src/app/auth/callback/route.ts`, `src/app/layout.tsx`, `src/components/LandingPage.tsx`
+- Description: Resolved Google OAuth redirect failures (`ERR_NAME_NOT_RESOLVED`) by replacing hardcoded `www.contextle.online` fallbacks with a canonical `getURL()` resolver that dynamically selects `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_VERCEL_URL`, or client-side origin. Resolved blank/invisible landing page content on mobile devices by introducing `gsap.matchMedia()`: desktop viewports retain smooth ScrollTrigger animations while mobile viewports (< 768px) bypass `opacity: 0` scroll trapping with `clearProps: "all"`. In addition, eliminated transforms on `<tr>` elements in the comparison matrix that previously caused WebKit/iOS Safari table rendering collapse.
+- Breaking Changes / Migrations: None. Ensure Supabase Dashboard Redirect URLs whitelist contains both apex and www domains as documented.
+
 ### [2026-09-21 06:10 UTC] - 1v1 Battle Forfeit and Resignation Engine
 - Action: ADDED
 - Files Affected: `save_data_migration.sql`, `src/app/api/multiplayer/forfeit/route.ts`, `src/app/battle/[code]/page.tsx`

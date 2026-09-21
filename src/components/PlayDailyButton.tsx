@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Loader2, ArrowRight } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
+import { getURL } from "@/utils/getURL";
 
 interface PlayDailyButtonProps {
   isAuthenticated?: boolean;
@@ -41,7 +42,7 @@ export default function PlayDailyButton({
       await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/auth/callback?next=/`,
+          redirectTo: `${getURL()}auth/callback`,
         },
       });
     } catch (err) {

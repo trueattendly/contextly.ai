@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
-import Script from "next/script";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/next";
 import FeedbackWidget from "@/components/FeedbackWidget";
@@ -23,13 +22,10 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 // ─── Site Constants ───────────────────────────────────────────────────────────
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.contextle.online";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://contextle.online";
 const SUPABASE_ORIGIN = process.env.NEXT_PUBLIC_SUPABASE_URL
   ? new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).origin
   : undefined;
-const SITE_NAME = "Contextle.ai";
-const SITE_DESCRIPTION =
-  "Play Contextle.ai, the ultimate futuristic AI word game. Guess the secret word using real-time semantic similarity ranks and dynamic AI clue stories. Challenge your brain daily!";
 const OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 // ─── Global Metadata ─────────────────────────────────────────────────────────

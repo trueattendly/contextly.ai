@@ -127,73 +127,118 @@ export default function LandingPage({ user, onPlay }: LandingPageProps) {
   const explainerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      // 1. Hero Reveal: elements fade and float upwards on initial load
-      if (heroRef.current) {
-        gsap.from(heroRef.current.querySelectorAll(".gsap-hero-item"), {
-          y: 35,
-          opacity: 0,
-          duration: 0.8,
-          stagger: 0.12,
-          ease: "power3.out",
-        });
-      }
+      const mm = gsap.matchMedia();
 
-      // 2. Feature Cards Stagger on Scroll
-      if (featuresRef.current) {
-        gsap.from(featuresRef.current.querySelectorAll(".gsap-feature-card"), {
-          scrollTrigger: {
-            trigger: featuresRef.current,
-            start: "top 80%",
-            toggleActions: "play none none none",
-          },
-          y: 40,
-          opacity: 0,
-          duration: 0.7,
-          stagger: 0.15,
-          ease: "power2.out",
-        });
-      }
+      // Desktop & Tablet (>= 768px): Progressive enhancement via ScrollTrigger
+      mm.add("(min-width: 768px)", () => {
+        // 1. Hero Reveal: elements fade and float upwards on initial load
+        if (heroRef.current) {
+          gsap.from(heroRef.current.querySelectorAll(".gsap-hero-item"), {
+            y: 35,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.12,
+            ease: "power3.out",
+          });
+        }
 
-      // 3. Comparison Matrix Rows Highlight on Scroll
-      if (matrixRef.current) {
-        const rows = matrixRef.current.querySelectorAll(".gsap-matrix-row");
-        rows.forEach((row) => {
+        // 2. Feature Cards Stagger on Scroll
+        if (featuresRef.current) {
           gsap.fromTo(
-            row,
-            { opacity: 0.5, y: 15 },
+            featuresRef.current.querySelectorAll(".gsap-feature-card"),
+            { y: 35, opacity: 0 },
             {
-              opacity: 1,
               y: 0,
-              duration: 0.5,
+              opacity: 1,
+              duration: 0.7,
+              stagger: 0.15,
               ease: "power2.out",
               scrollTrigger: {
-                trigger: row,
-                start: "top 85%",
-                toggleActions: "play reverse play reverse",
+                trigger: featuresRef.current,
+                start: "top 80%",
+                toggleActions: "play none none none",
               },
             }
           );
-        });
-      }
+        }
 
-      // 4. Visual Explainer Step Cards Stagger
-      if (explainerRef.current) {
-        gsap.from(explainerRef.current.querySelectorAll(".gsap-step-card"), {
-          scrollTrigger: {
-            trigger: explainerRef.current,
-            start: "top 80%",
-            toggleActions: "play none none none",
-          },
-          y: 30,
-          opacity: 0,
-          duration: 0.6,
-          stagger: 0.12,
-          ease: "power2.out",
-        });
-      }
+        // 3. Comparison Matrix Card Reveal (animate container, NOT <tr> elements to avoid WebKit table layout bugs)
+        if (matrixRef.current) {
+          const matrixCard = matrixRef.current.querySelector(".gsap-matrix-card");
+          if (matrixCard) {
+            gsap.fromTo(
+              matrixCard,
+              { y: 30, opacity: 0 },
+              {
+                y: 0,
+                opacity: 1,
+                duration: 0.6,
+                ease: "power2.out",
+                scrollTrigger: {
+                  trigger: matrixRef.current,
+                  start: "top 85%",
+                  toggleActions: "play none none none",
+                },
+              }
+            );
+          }
+        }
+
+        // 4. Visual Explainer Step Cards Stagger
+        if (explainerRef.current) {
+          gsap.fromTo(
+            explainerRef.current.querySelectorAll(".gsap-step-card"),
+            { y: 30, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.6,
+              stagger: 0.12,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: explainerRef.current,
+                start: "top 80%",
+                toggleActions: "play none none none",
+              },
+            }
+          );
+        }
+      });
+
+      // Mobile (< 768px): Zero-risk fallback to ensure 100% visibility on touch screens.
+      // Do NOT hide below-the-fold content behind ScrollTrigger.
+      mm.add("(max-width: 767px)", () => {
+        if (heroRef.current) {
+          gsap.fromTo(
+            heroRef.current.querySelectorAll(".gsap-hero-item"),
+            { y: 15, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.5,
+              stagger: 0.08,
+              ease: "power2.out",
+            }
+          );
+        }
+
+        // Ensure all below-the-fold elements are explicitly reset and cleared of transforms/opacity
+        gsap.set(
+          [
+            ".gsap-feature-card",
+            ".gsap-matrix-card",
+            ".gsap-step-card",
+          ],
+          {
+            clearProps: "all",
+          }
+        );
+      });
     }, containerRef);
 
     return () => {
@@ -444,9 +489,9 @@ export default function LandingPage({ user, onPlay }: LandingPageProps) {
               </p>
             </div>
 
-            <div className="rounded-2xl border border-[#FEDAB8]/20 bg-[#142728] overflow-hidden shadow-2xl">
+            <div className="gsap-matrix-card rounded-2xl border border-[#FEDAB8]/20 bg-[#142728] overflow-hidden shadow-2xl">
               <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse text-xs sm:text-sm">
+                <table className="w-full text-left border-collapse text-xs sm:text-sm min-w-[500px] sm:min-w-full">
                   <thead>
                     <tr className="border-b border-[#FEDAB8]/15 bg-[#1b3334]">
                       <th className="p-4 sm:p-5 font-bold text-[#FEDAB8] uppercase tracking-wider text-[11px]">
@@ -464,7 +509,7 @@ export default function LandingPage({ user, onPlay }: LandingPageProps) {
                     {COMPARISON_ROWS.map((row, idx) => (
                       <tr
                         key={idx}
-                        className="gsap-matrix-row hover:bg-[#203C3D]/50 transition-colors"
+                        className="hover:bg-[#203C3D]/50 transition-colors"
                       >
                         <td className="p-4 sm:p-5 font-semibold text-[#FEDAB8]/90">
                           {row.criteria}
